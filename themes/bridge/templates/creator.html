@@ -2,20 +2,14 @@
 {% block content %}
 <a class="back" href="{{ SITEURL }}/creators/">&larr; Back</a>
 
-<!-- Hero: title + CTA -->
+<!-- Hero: title + romanized/english subtitle + CTA -->
 <section class="creator-hero card" id="creator-hero"></section>
 
-<!-- Two side-by-side metric groups -->
+<!-- Metrics (two rows of four, with one double-wide) -->
 <section class="section">
-  <div class="metrics-split">
-    <div class="metrics-group card">
-      <h3>Basic</h3>
-      <div id="metrics-basic" class="metrics-grid"><!-- filled by JS --></div>
-    </div>
-    <div class="metrics-group card">
-      <h3>Performance</h3>
-      <div id="metrics-performance" class="metrics-grid"><!-- filled by JS --></div>
-    </div>
+  <div class="metrics-group card">
+    <h3>Basic & Performance</h3>
+    <div id="metrics-grid" class="metrics-grid-4"><!-- filled by JS --></div>
   </div>
 </section>
 
@@ -24,40 +18,41 @@
   <h3>Recent videos</h3>
   <div class="table-wrap">
     <table id="videos-table" class="tbl nosort">
-  <thead>
-    <tr>
-      <th class="left">Title</th>
-      <th class="left">Published</th>
-      <th class="right">Views</th>
-      <th class="right">Likes</th>
-      <th class="right">Comments</th>
-      <th class="left">Short</th>
-      <th class="left">Link</th>
-    </tr>
-  </thead>
-  <tbody><!-- rows injected by JS --></tbody>
-</table>
+      <thead>
+        <tr>
+          <th class="left col-title">Title</th>
+          <th class="left">Published</th>
+          <th class="right col-narrow">Views</th>
+          <th class="right col-narrow">Likes</th>
+          <th class="right col-narrow">Comments</th>
+          <th class="left">Short</th>
+          <th class="left">Link</th>
+        </tr>
+      </thead>
+      <tbody><!-- rows injected by JS --></tbody>
+    </table>
   </div>
-  <p class="small muted">Tip: click headers to sort.</p>
+  <p class="small muted">Tip: headers aren’t clickable (fixed order).</p>
 </section>
 
-<!-- Top videos AFTER recent videos -->
+<!-- Top-5 AFTER recent videos (all-time, non-sortable, same columns) -->
 <section class="section">
-  <h3>Top videos</h3>
+  <h3>Top-5 videos all-time</h3>
   <div class="table-wrap">
-    <table class="tbl">
-      <thead><tr><th class="left">Title</th><th class="left">Published</th><th class="right">Views</th><th class="left">Link</th></tr></thead>
-      <tbody id="top5-recent"><!-- filled by JS --></tbody>
+    <table id="top5-table" class="tbl nosort">
+      <thead>
+        <tr>
+          <th class="left col-title">Title</th>
+          <th class="left">Published</th>
+          <th class="right col-narrow">Views</th>
+          <th class="right col-narrow">Likes</th>
+          <th class="right col-narrow">Comments</th>
+          <th class="left">Short</th>
+          <th class="left">Link</th>
+        </tr>
+      </thead>
+      <tbody id="top5-alltime"><!-- rows injected by JS --></tbody>
     </table>
   </div>
-  <p class="small muted">Top 5 in the last year</p>
-  <div class="separator"></div>
-  <div class="table-wrap">
-    <table class="tbl">
-      <thead><tr><th class="left">Title</th><th class="left">Published</th><th class="right">Views</th><th class="left">Link</th></tr></thead>
-      <tbody id="top5-alltime"><!-- filled by JS --></tbody>
-    </table>
-  </div>
-  <p class="small muted">All-time top 5</p>
 </section>
 {% endblock %}
