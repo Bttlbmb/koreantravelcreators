@@ -10,7 +10,12 @@
 <body>
   <header class="site-header">
     <div class="wrap">
-      <h1><a href="{{ SITEURL }}/">{{ SITENAME }}</a></h1>
+      <h1>
+        <a href="{{ SITEURL }}/">
+          <img src="{{ SITEURL }}/theme/img/logo.jpg" alt="Logo" class="logo">
+          {{ SITENAME }}
+        </a>
+      </h1>
       <nav>
         <a href="{{ SITEURL }}/">Dashboard</a>
         <a href="{{ SITEURL }}/creators/">Creators</a>
