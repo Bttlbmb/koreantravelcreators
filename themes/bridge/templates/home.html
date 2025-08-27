@@ -9,29 +9,34 @@
   <table id="creators-table" class="tbl">
     <thead>
       <tr>
-        <th data-key="display_name" class="left">Creator</th>
-        <th data-key="subs_total" class="right">Subscribers</th>
+        <th data-key="display_name" class="left">
+          Creator
+          <span class="info" data-info="Creator/channel name. Click a name to open the detail page.">ℹ️</span>
+        </th>
+        <th data-key="subs_total" class="right">
+          Subscribers
+          <span class="info" data-info="Current subscriber count (latest snapshot).">ℹ️</span>
+        </th>
         <th data-key="growth_30d" class="right">
-  Growth (30d)
-  <span class="info" data-info="Percent change in subscribers over the last 30 days. ▲ = up, ▼ = down.">ℹ️</span>
-</th>
-<th data-key="avg_views" class="right">
-  Avg views
-  <span class="info" data-info="Average views of the last 10 uploaded videos.">ℹ️</span>
-</th>
-<th data-key="engagement_rate" class="right">
-  Engagement rate
-  <span class="info" data-info="(Likes + comments) ÷ views, averaged over recent videos.">ℹ️</span>
-</th>
-<th data-key="uploads_30d" class="right">
-  Uploads (30d)
-  <span class="info" data-info="Number of videos uploaded in the last 30 days.">ℹ️</span>
-</th>
-<th data-key="last_upload" class="left">
-  Last upload
-  <span class="info" data-info="Date of the creator’s most recent upload.">ℹ️</span>
-</th>
-
+          Growth (30d)
+          <span class="info" data-info="Percent change in subscribers over the last 30 days. ▲ = up, ▼ = down.">ℹ️</span>
+        </th>
+        <th data-key="avg_views" class="right">
+          Avg views (last 10)
+          <span class="info" data-info="Average views across the last 10 uploaded long-form videos.">ℹ️</span>
+        </th>
+        <th data-key="engagement_rate" class="right">
+          Engagement rate
+          <span class="info" data-info="(Likes + comments) ÷ views, averaged over recent videos. Shown as a percentage.">ℹ️</span>
+        </th>
+        <th data-key="uploads_30d" class="right">
+          Uploads (30d)
+          <span class="info" data-info="Number of videos uploaded in the last 30 days.">ℹ️</span>
+        </th>
+        <th data-key="last_upload" class="left">
+          Last upload
+          <span class="info" data-info="Date of the most recent upload (YYYY-MM-DD).">ℹ️</span>
+        </th>
         <th class="left">Channel</th>
       </tr>
     </thead>
