@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ SITENAME }}</title>
+  <link rel="stylesheet" href="{{ SITEURL }}/theme/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1><a href="{{ SITEURL }}/">{{ SITENAME }}</a></h1>
+      <nav>
+        <a href="{{ SITEURL }}/">Dashboard</a>
+        <a href="{{ SITEURL }}/creators/">Creators</a>
+      </nav>
+    </div>
+  </header>
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Data from YouTube API. Not affiliated with Google/YouTube. Last build {{ NOW | default('') }}</p>
+    </div>
+  </footer>
+  <script src="{{ SITEURL }}/theme/js/main.js"></script>
+</body>
+</html>
