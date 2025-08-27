@@ -6,27 +6,13 @@
       "display_name": "여행하는민수",
       "channel_url": "https://youtube.com/channel/UCDEMO001",
       "subs_total": 128000,
+      "growth_30d": 6.8,
       "avg_views": 45210,
-      "destinations": [
-        "Berlin",
-        "Munich",
-        "Vienna"
-      ],
+      "engagement_rate": 0.043,
+      "uploads_30d": 3,
+      "last_upload": "2025-08-21",
       "recent_videos": [
-        {
-          "video_id": "vid001",
-          "title": "베를린 여행 브이로그",
-          "url": "https://youtu.be/vid001",
-          "views": 120000,
-          "published_at": "2025-07-10"
-        },
-        {
-          "video_id": "vid002",
-          "title": "빈 여행 꿀팁",
-          "url": "https://youtu.be/vid002",
-          "views": 85400,
-          "published_at": "2025-07-12"
-        }
+        {"title": "베를린 여행 브이로그", "url": "https://youtu.be/vid001", "views": 120000, "published_at": "2025-07-10"}
       ]
     },
     {
@@ -34,42 +20,253 @@
       "display_name": "코코트래블",
       "channel_url": "https://youtube.com/channel/UCDEMO002",
       "subs_total": 76500,
+      "growth_30d": 3.2,
       "avg_views": 27310,
-      "destinations": [
-        "Paris",
-        "Rome",
-        "Interlaken"
-      ],
-      "recent_videos": [
-        {
-          "video_id": "vid101",
-          "title": "파리 카페 투어",
-          "url": "https://youtu.be/vid101",
-          "views": 99000,
-          "published_at": "2025-08-02"
-        }
-      ]
+      "engagement_rate": 0.051,
+      "uploads_30d": 2,
+      "last_upload": "2025-08-18"
     },
     {
       "creator_id": "UCDEMO003",
       "display_name": "K-트립로그",
       "channel_url": "https://youtube.com/channel/UCDEMO003",
       "subs_total": 312000,
+      "growth_30d": 8.5,
       "avg_views": 112300,
-      "destinations": [
-        "Hallstatt",
-        "Salzburg",
-        "Berlin"
-      ],
-      "recent_videos": [
-        {
-          "video_id": "vid201",
-          "title": "할슈타트 원데이 코스",
-          "url": "https://youtu.be/vid201",
-          "views": 220000,
-          "published_at": "2025-07-28"
-        }
-      ]
+      "engagement_rate": 0.038,
+      "uploads_30d": 4,
+      "last_upload": "2025-08-25"
+    },
+    {
+      "creator_id": "UCDEMO004",
+      "display_name": "라임여행기",
+      "channel_url": "https://youtube.com/channel/UCDEMO004",
+      "subs_total": 184000,
+      "growth_30d": 2.1,
+      "avg_views": 65400,
+      "engagement_rate": 0.047,
+      "uploads_30d": 2,
+      "last_upload": "2025-08-19"
+    },
+    {
+      "creator_id": "UCDEMO005",
+      "display_name": "맵잘알여행자",
+      "channel_url": "https://youtube.com/channel/UCDEMO005",
+      "subs_total": 54000,
+      "growth_30d": 1.0,
+      "avg_views": 16200,
+      "engagement_rate": 0.061,
+      "uploads_30d": 1,
+      "last_upload": "2025-08-12"
+    },
+    {
+      "creator_id": "UCDEMO006",
+      "display_name": "소담소담로드",
+      "channel_url": "https://youtube.com/channel/UCDEMO006",
+      "subs_total": 226000,
+      "growth_30d": -0.9,
+      "avg_views": 70900,
+      "engagement_rate": 0.033,
+      "uploads_30d": 1,
+      "last_upload": "2025-07-31"
+    },
+    {
+      "creator_id": "UCDEMO007",
+      "display_name": "유럽한바퀴",
+      "channel_url": "https://youtube.com/channel/UCDEMO007",
+      "subs_total": 87000,
+      "growth_30d": 5.4,
+      "avg_views": 31200,
+      "engagement_rate": 0.058,
+      "uploads_30d": 3,
+      "last_upload": "2025-08-23"
+    },
+    {
+      "creator_id": "UCDEMO008",
+      "display_name": "한입투어",
+      "channel_url": "https://youtube.com/channel/UCDEMO008",
+      "subs_total": 392000,
+      "growth_30d": 11.2,
+      "avg_views": 148500,
+      "engagement_rate": 0.031,
+      "uploads_30d": 5,
+      "last_upload": "2025-08-26"
+    },
+    {
+      "creator_id": "UCDEMO009",
+      "display_name": "바람따라여행",
+      "channel_url": "https://youtube.com/channel/UCDEMO009",
+      "subs_total": 29500,
+      "growth_30d": 2.9,
+      "avg_views": 9800,
+      "engagement_rate": 0.072,
+      "uploads_30d": 2,
+      "last_upload": "2025-08-17"
+    },
+    {
+      "creator_id": "UCDEMO010",
+      "display_name": "쏠로트래블러",
+      "channel_url": "https://youtube.com/channel/UCDEMO010",
+      "subs_total": 154000,
+      "growth_30d": -1.7,
+      "avg_views": 50100,
+      "engagement_rate": 0.042,
+      "uploads_30d": 0,
+      "last_upload": "2025-07-20"
+    },
+    {
+      "creator_id": "UCDEMO011",
+      "display_name": "비엔나일기",
+      "channel_url": "https://youtube.com/channel/UCDEMO011",
+      "subs_total": 61000,
+      "growth_30d": 4.4,
+      "avg_views": 20400,
+      "engagement_rate": 0.067,
+      "uploads_30d": 2,
+      "last_upload": "2025-08-22"
+    },
+    {
+      "creator_id": "UCDEMO012",
+      "display_name": "파리지앵꿈나무",
+      "channel_url": "https://youtube.com/channel/UCDEMO012",
+      "subs_total": 98000,
+      "growth_30d": 6.1,
+      "avg_views": 34500,
+      "engagement_rate": 0.055,
+      "uploads_30d": 3,
+      "last_upload": "2025-08-24"
+    },
+    {
+      "creator_id": "UCDEMO013",
+      "display_name": "오로라로드",
+      "channel_url": "https://youtube.com/channel/UCDEMO013",
+      "subs_total": 412000,
+      "growth_30d": 7.5,
+      "avg_views": 131200,
+      "engagement_rate": 0.029,
+      "uploads_30d": 2,
+      "last_upload": "2025-08-16"
+    },
+    {
+      "creator_id": "UCDEMO014",
+      "display_name": "티켓없이떠나자",
+      "channel_url": "https://youtube.com/channel/UCDEMO014",
+      "subs_total": 8200,
+      "growth_30d": 12.0,
+      "avg_views": 4100,
+      "engagement_rate": 0.094,
+      "uploads_30d": 4,
+      "last_upload": "2025-08-26"
+    },
+    {
+      "creator_id": "UCDEMO015",
+      "display_name": "독설가이드",
+      "channel_url": "https://youtube.com/channel/UCDEMO015",
+      "subs_total": 223000,
+      "growth_30d": 0.6,
+      "avg_views": 74200,
+      "engagement_rate": 0.036,
+      "uploads_30d": 1,
+      "last_upload": "2025-08-05"
+    },
+    {
+      "creator_id": "UCDEMO016",
+      "display_name": "스위스한달살기",
+      "channel_url": "https://youtube.com/channel/UCDEMO016",
+      "subs_total": 48000,
+      "growth_30d": 2.5,
+      "avg_views": 17100,
+      "engagement_rate": 0.064,
+      "uploads_30d": 2,
+      "last_upload": "2025-08-18"
+    },
+    {
+      "creator_id": "UCDEMO017",
+      "display_name": "프라하산책",
+      "channel_url": "https://youtube.com/channel/UCDEMO017",
+      "subs_total": 131000,
+      "growth_30d": 3.7,
+      "avg_views": 41300,
+      "engagement_rate": 0.052,
+      "uploads_30d": 2,
+      "last_upload": "2025-08-20"
+    },
+    {
+      "creator_id": "UCDEMO018",
+      "display_name": "런던로그북",
+      "channel_url": "https://youtube.com/channel/UCDEMO018",
+      "subs_total": 267000,
+      "growth_30d": 9.3,
+      "avg_views": 93200,
+      "engagement_rate": 0.035,
+      "uploads_30d": 4,
+      "last_upload": "2025-08-25"
+    },
+    {
+      "creator_id": "UCDEMO019",
+      "display_name": "지중해야행",
+      "channel_url": "https://youtube.com/channel/UCDEMO019",
+      "subs_total": 37500,
+      "growth_30d": -0.8,
+      "avg_views": 12100,
+      "engagement_rate": 0.071,
+      "uploads_30d": 1,
+      "last_upload": "2025-08-03"
+    },
+    {
+      "creator_id": "UCDEMO020",
+      "display_name": "북유럽의봄",
+      "channel_url": "https://youtube.com/channel/UCDEMO020",
+      "subs_total": 159000,
+      "growth_30d": 4.9,
+      "avg_views": 56200,
+      "engagement_rate": 0.041,
+      "uploads_30d": 3,
+      "last_upload": "2025-08-23"
+    },
+    {
+      "creator_id": "UCDEMO021",
+      "display_name": "바르셀로나주말",
+      "channel_url": "https://youtube.com/channel/UCDEMO021",
+      "subs_total": 90500,
+      "growth_30d": 1.9,
+      "avg_views": 29800,
+      "engagement_rate": 0.057,
+      "uploads_30d": 1,
+      "last_upload": "2025-08-14"
+    },
+    {
+      "creator_id": "UCDEMO022",
+      "display_name": "알프스트레킹",
+      "channel_url": "https://youtube.com/channel/UCDEMO022",
+      "subs_total": 64000,
+      "growth_30d": 6.2,
+      "avg_views": 21900,
+      "engagement_rate": 0.062,
+      "uploads_30d": 3,
+      "last_upload": "2025-08-26"
+    },
+    {
+      "creator_id": "UCDEMO023",
+      "display_name": "빈티지여행사",
+      "channel_url": "https://youtube.com/channel/UCDEMO023",
+      "subs_total": 118000,
+      "growth_30d": 0.0,
+      "avg_views": 38900,
+      "engagement_rate": 0.045,
+      "uploads_30d": 1,
+      "last_upload": "2025-08-09"
+    },
+    {
+      "creator_id": "UCDEMO024",
+      "display_name": "잘츠부르크의밤",
+      "channel_url": "https://youtube.com/channel/UCDEMO024",
+      "subs_total": 21200,
+      "growth_30d": 10.5,
+      "avg_views": 9100,
+      "engagement_rate": 0.088,
+      "uploads_30d": 4,
+      "last_upload": "2025-08-24"
     }
   ]
 }
