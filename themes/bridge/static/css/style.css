@@ -1,20 +1,19 @@
 /* =========================================================
    Korean Travel YouTubers – Europe
    Global stylesheet (Fresh Aqua – light, professional)
-   Replace your themes/bridge/static/css/style.css with this
    ========================================================= */
 
 /* ====== Theme tokens ====== */
 :root {
-  --bg: #F9FAFB;         /* page background */
-  --surface: #FFFFFF;    /* tables/cards */
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
   --card: #FFFFFF;
-  --text: #111827;       /* near-black text */
-  --muted: #6B7280;      /* gray-500 */
-  --border: #E5E7EB;     /* gray-200 */
-  --accent: #0EA5E9;     /* sky-500 */
-  --accent-2: #06B6D4;   /* cyan-500 */
-  --accent-3: #F59E0B;   /* amber-500 */
+  --text: #111827;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+  --accent: #0EA5E9;
+  --accent-2: #06B6D4;
+  --accent-3: #F59E0B;
   --shadow: 0 6px 20px rgba(15, 23, 42, .08);
 }
 
@@ -30,7 +29,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ====== Layout chrome ====== */
+/* ====== Layout ====== */
 .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
 
 .site-header {
@@ -48,7 +47,7 @@ body {
 .site-footer { border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
 .site-footer .wrap { padding-top: 18px; padding-bottom: 32px; }
 
-/* ====== Typography & links ====== */
+/* ====== Type & links ====== */
 h1, h2, h3 { margin: 0 0 10px; }
 h2 { font-size: 28px; font-weight: 800; letter-spacing: .2px; margin-top: 16px; }
 h3 { font-size: 18px; font-weight: 700; color: #0F172A; margin-top: 6px; }
@@ -82,11 +81,7 @@ small, .small { font-size: 12px; color: var(--muted); }
 }
 .btn:hover { filter: brightness(1.05); box-shadow: 0 8px 18px rgba(14,165,233,.35); }
 
-/* ====== Sections ====== */
-.section { margin: 20px 0 28px; }
-.separator { height: 1px; background: var(--border); margin: 24px 0; }
-
-/* ====== Tooltips (ℹ️) ====== */
+/* ====== Tooltips ====== */
 .info { cursor: pointer; font-size: 13px; margin-left: 4px; color: var(--muted); position: relative; }
 .info:hover { color: var(--accent); }
 .tooltip {
@@ -95,7 +90,7 @@ small, .small { font-size: 12px; color: var(--muted); }
   max-width: 260px; line-height: 1.4;
 }
 
-/* ====== Tables (Excel-style) ====== */
+/* ====== Tables ====== */
 .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
 .tbl { width: 100%; border-collapse: collapse; min-width: 900px; }
 .tbl thead th {
@@ -110,41 +105,41 @@ small, .small { font-size: 12px; color: var(--muted); }
 .tbl .right { text-align: right; }
 .tbl .left  { text-align: left; }
 
-/* Sort arrows (only applied when JS adds sort-asc/desc) */
+/* Sort arrows (added by JS for sortable tables only) */
 .tbl thead th.sort-asc::after  { content: " ▲"; font-size: 11px; color: var(--muted); }
 .tbl thead th.sort-desc::after { content: " ▼"; font-size: 11px; color: var(--muted); }
 
-/* Non-sortable variant (creator video lists) */
+/* Non-sortable variant (creator lists) */
 .tbl.nosort thead th { cursor: default; }
 .tbl.nosort thead th.sort-asc::after,
 .tbl.nosort thead th.sort-desc::after { content: none; }
 
 /* Growth coloring */
-.growth-up { color: #16A34A; font-weight: 600; }   /* green-600 */
-.growth-down { color: #DC2626; font-weight: 600; } /* red-600 */
+.growth-up { color: #16A34A; font-weight: 600; }
+.growth-down { color: #DC2626; font-weight: 600; }
+
+/* Name subtitle */
+.namecell .name-roman, .name-roman {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+body.name-roman-first .name-native { font-size: 16px; color: var(--muted); font-weight: 600; }
+body.name-roman-first .name-roman  { font-size: 18px; color: var(--text);  font-weight: 800; }
 
 /* ====== Creator hero & metrics ====== */
 .creator-hero { padding: 18px; }
 .hero-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 
-/* Two metric groups: stack Basic above Performance (per request) */
-.metrics-split {
-  display: grid;
-  grid-template-columns: 1fr;  /* always single column */
-  gap: 16px;
-}
+/* Metrics grid: 4 columns (two rows), with double-wide support */
 .metrics-group.card { padding: 16px; }
 .metrics-group h3 { margin: 0 0 12px; }
-
-/* Metric tiles laid out in responsive grid inside each group */
-.metrics-grid {
+.metrics-grid-4 {
   display: grid;
-  grid-template-columns: repeat(2, minmax(140px, 1fr)); /* small: 2 cols */
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
   gap: 12px;
 }
-@media (min-width: 720px)  { .metrics-grid { grid-template-columns: repeat(3, minmax(160px, 1fr)); } }
-@media (min-width: 1200px) { .metrics-grid { grid-template-columns: repeat(4, minmax(170px, 1fr)); } }
-
+@media (max-width: 960px) { .metrics-grid-4 { grid-template-columns: repeat(2, minmax(160px, 1fr)); } }
 .metric {
   background: #F8FAFC;
   border: 1px solid var(--border);
@@ -155,4 +150,9 @@ small, .small { font-size: 12px; color: var(--muted); }
 .metric-value { font-size: 18px; font-weight: 800; margin-top: 2px; }
 .metric--wide { grid-column: span 2; }
 
-#videos-table thead th { white-space: nowrap; }
+/* Recent/Top tables: column widths */
+.col-title { width: 42%; }
+.col-narrow { width: 8%; }
+
+/* Keep header cells from wrapping awkwardly in narrow tables */
+#videos-table thead th, #top5-table thead th { white-space: nowrap; }
