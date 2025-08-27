@@ -21,3 +21,8 @@ PAGE_PATHS = ['pages']
 ARTICLE_PATHS = []
 
 DEFAULT_PAGINATION = False
+
+# put this near the bottom of both configs
+DIRECT_TEMPLATES = []     # don’t auto-build blog index/archives/tags
+INDEX_SAVE_AS = ''        # don’t write default index.html
+
