@@ -258,15 +258,21 @@
       "last_upload": "2025-08-09"
     },
     {
-      "creator_id": "UCDEMO024",
-      "display_name": "잘츠부르크의밤",
-      "channel_url": "https://youtube.com/channel/UCDEMO024",
-      "subs_total": 21200,
-      "growth_30d": 10.5,
-      "avg_views": 9100,
-      "engagement_rate": 0.088,
+      "creator_id": "UCDEMO100",
+      "display_name": "티켓없이떠나자",
+      "channel_url": "https://youtube.com/channel/UCDEMO100",
+      "subs_total": 8200,
+      "growth_30d": 12.0,
+      "avg_views": 4100,
+      "engagement_rate": 0.094,
       "uploads_30d": 4,
-      "last_upload": "2025-08-24"
+      "last_upload": "2025-08-26",
+      "recent_videos": [
+        {"title":"빈 2일 여행 코스","url":"https://youtu.be/v1","published_at":"2025-08-26","views":8200,"likes":590,"comments":48,"is_short":false},
+        {"title":"잘츠부르크 하루 코스","url":"https://youtu.be/v2","published_at":"2025-08-22","views":7300,"likes":520,"comments":41,"is_short":false},
+        {"title":"빈 카페 투어","url":"https://youtu.be/v3","published_at":"2025-08-18","views":9100,"likes":610,"comments":52,"is_short":true}
+      ]
     }
   ]
 }
+
