@@ -19,3 +19,6 @@ PAGE_PATHS = ['pages']
 ARTICLE_PATHS = []
 
 DEFAULT_PAGINATION = False
+
+DIRECT_TEMPLATES = []      # do not auto-generate blog index/archives
+INDEX_SAVE_AS = ''         # do not write a default index.html
