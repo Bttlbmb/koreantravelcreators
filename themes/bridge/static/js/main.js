@@ -2,14 +2,12 @@
    Data loading & helpers
    ======================= */
 async function loadData() {
-  // Relative path works under project pages with <base href="{{ SITEURL }}/">
-  const res = await fetch('data/creators.json');
+  const res = await fetch('data/creators.json'); // relative to <base>
   return await res.json();
 }
 const fmt = n => (n ?? 0).toLocaleString();
 const isoToYmd = s => (s ? String(s).slice(0, 10) : '—');
 
-// Normalize incoming JSON so UI code is robust
 function normalizeCreators(raw) {
   return (raw || []).map(c => ({
     creator_id: c.creator_id,
@@ -24,13 +22,13 @@ function normalizeCreators(raw) {
     uploads_30d: Number(c.uploads_30d ?? 0),
     last_upload: c.last_upload || null,
 
-    // creator page new metrics
-    channel_created: c.channel_created || null,      // ISO date
+    // creator page metrics
+    channel_created: c.channel_created || null, // ISO date
     total_uploads: (c.total_uploads == null ? null : Number(c.total_uploads)),
     views_30d: (c.views_30d == null ? null : Number(c.views_30d)),
     views_90d: (c.views_90d == null ? null : Number(c.views_90d)),
     views_365d: (c.views_365d == null ? null : Number(c.views_365d)),
-    velocity_7d: (c.velocity_7d == null ? null : Number(c.velocity_7d)), // median/avg views in first 7d
+    velocity_7d: (c.velocity_7d == null ? null : Number(c.velocity_7d)),
     shorts_ratio_90d: (c.shorts_ratio_90d == null ? null : Number(c.shorts_ratio_90d)), // 0..1
 
     top5_recent: (c.top5_recent || []).map(v => ({
@@ -46,11 +44,9 @@ function normalizeCreators(raw) {
       views: Number(v.views ?? 0)
     })),
 
-    // recent videos for the table
     recent_videos: (c.recent_videos || []).map(v => ({
       title: v.title || '—',
       url: v.url || '#',
-      video_id: v.video_id || null,
       published_at: v.published_at || null,
       views: Number(v.views ?? 0),
       likes: Number(v.likes ?? 0),
@@ -61,7 +57,7 @@ function normalizeCreators(raw) {
 }
 
 /* =======================
-   Tooltips (for headers)
+   Tooltips (for ℹ️ icons)
    ======================= */
 function setupTooltips(scope = document) {
   scope.querySelectorAll('.info').forEach(el => {
@@ -120,7 +116,6 @@ function makeSortable(dataArray, tableSelector, defaultKey = 'subs_total', defau
   function toComparable(v, key) {
     if (['display_name','last_upload','title','published_at'].includes(key)) return String(v ?? '').toLowerCase();
     return Number(v ?? 0);
-    // note: growth_30d, engagement_rate are numeric already
   }
 
   function sortData() {
@@ -161,9 +156,19 @@ function wireHomeFilter(creators) {
 }
 
 /* =======================
-   Creator page: hero
+   Creator page
    ======================= */
-function heroMetric(label, value) {
+function renderCreatorHeader(c) {
+  const hero = document.getElementById('creator-hero');
+  if (!hero) return;
+  hero.innerHTML = `
+    <div class="hero-head">
+      <h2>${c.display_name}</h2>
+      <a class="btn" href="${c.channel_url}" target="_blank" rel="noopener">Open Channel</a>
+    </div>
+  `;
+}
+function metric(label, value) {
   return `
     <div class="metric">
       <div class="metric-label">${label}</div>
@@ -171,72 +176,37 @@ function heroMetric(label, value) {
     </div>
   `;
 }
+function renderCreatorMetrics(c) {
+  const basic = document.getElementById('metrics-basic');
+  const perf  = document.getElementById('metrics-performance');
+  if (!basic || !perf) return;
 
-function renderCreatorHero(c) {
-  const hero = document.getElementById('creator-hero');
-  if (!hero) return;
-  const growth = c.growth_30d == null ? '—' :
-    `<span class="${c.growth_30d >= 0 ? 'growth-up':'growth-down'}">${c.growth_30d >= 0 ? '▲':'▼'} ${Math.abs(c.growth_30d).toFixed(1)}%</span>`;
+  // BASIC: creation date, total uploads, uploads in 30d, last upload
+  basic.innerHTML = [
+    metric('Created', isoToYmd(c.channel_created)),
+    metric('Total uploads', c.total_uploads==null ? '—' : fmt(c.total_uploads)),
+    metric('Uploads (30d)', fmt(c.uploads_30d)),
+    metric('Last upload', isoToYmd(c.last_upload)),
+  ].join('');
+
+  // PERFORMANCE: subs, growth, avg views, ER, views (30/90/365), velocity, Shorts %
+  const growth = c.growth_30d == null ? '—'
+    : `<span class="${c.growth_30d>=0?'growth-up':'growth-down'}">${c.growth_30d>=0?'▲':'▼'} ${Math.abs(c.growth_30d).toFixed(1)}%</span>`;
   const er = c.engagement_rate == null ? '—' : `${(c.engagement_rate*100).toFixed(1)}%`;
   const shorts = c.shorts_ratio_90d == null ? '—' : `${Math.round(c.shorts_ratio_90d*100)}%`;
   const viewsCombo = [c.views_30d, c.views_90d, c.views_365d].map(v => v==null ? '—' : fmt(v)).join(' / ');
 
-  hero.innerHTML = `
-    <div class="hero-head">
-      <h2>${c.display_name}</h2>
-      <a class="btn" href="${c.channel_url}" target="_blank" rel="noopener">Open Channel</a>
-    </div>
-    <div class="hero-grid">
-      ${heroMetric('Subscribers', fmt(c.subs_total))}
-      ${heroMetric('Growth (30d)', growth)}
-      ${heroMetric('Avg views (10)', fmt(c.avg_views))}
-      ${heroMetric('ER', er)}
-      ${heroMetric('Uploads (30d)', fmt(c.uploads_30d))}
-      ${heroMetric('Last upload', isoToYmd(c.last_upload))}
-      ${heroMetric('Created', isoToYmd(c.channel_created))}
-      ${heroMetric('Total uploads', c.total_uploads==null ? '—' : fmt(c.total_uploads))}
-      ${heroMetric('Views 30/90/365d', viewsCombo)}
-      ${heroMetric('7-day velocity', c.velocity_7d==null ? '—' : fmt(c.velocity_7d))}
-      ${heroMetric('Shorts % (90d)', shorts)}
-    </div>
-  `;
+  perf.innerHTML = [
+    metric('Subscribers', fmt(c.subs_total)),
+    metric('Growth (30d)', growth),
+    metric('Avg views (10)', fmt(c.avg_views)),
+    metric('ER', er),
+    metric('Views 30/90/365d', viewsCombo),
+    metric('7-day velocity', c.velocity_7d==null ? '—' : fmt(c.velocity_7d)),
+    metric('Shorts % (90d)', shorts),
+  ].join('');
 }
 
-/* =======================
-   Creator page: top-5
-   ======================= */
-function renderTop5(list, targetId) {
-  const el = document.getElementById(targetId);
-  if (!el) return;
-  if (!list || !list.length) {
-    el.innerHTML = '<p class="muted small">No data.</p>';
-    return;
-  }
-  el.innerHTML = `
-    <div class="table-wrap"><table class="tbl">
-      <thead><tr>
-        <th class="left">Title</th>
-        <th class="left">Published</th>
-        <th class="right">Views</th>
-        <th class="left">Link</th>
-      </tr></thead>
-      <tbody>
-        ${list.map(v => `
-          <tr>
-            <td class="left">${v.title}</td>
-            <td class="left">${isoToYmd(v.published_at)}</td>
-            <td class="right">${fmt(v.views)}</td>
-            <td class="left"><a class="link" href="${v.url}" target="_blank" rel="noopener">Watch</a></td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table></div>
-  `;
-}
-
-/* =======================
-   Creator page: videos table
-   ======================= */
 function renderVideoRows(videos) {
   const tbody = document.querySelector('#videos-table tbody');
   if (!tbody) return;
@@ -257,6 +227,23 @@ function renderVideoRows(videos) {
   `).join('');
 }
 
+function renderTop5Rows(list, targetId) {
+  const tbody = document.getElementById(targetId);
+  if (!tbody) return;
+  if (!list || !list.length) {
+    tbody.innerHTML = `<tr><td colspan="4" class="left muted">No data.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(v => `
+    <tr>
+      <td class="left">${v.title}</td>
+      <td class="left">${isoToYmd(v.published_at)}</td>
+      <td class="right">${fmt(v.views)}</td>
+      <td class="left"><a class="link" href="${v.url}" target="_blank" rel="noopener">Watch</a></td>
+    </tr>
+  `).join('');
+}
+
 /* =======================
    Router
    ======================= */
@@ -268,7 +255,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('last-updated').textContent = data.last_updated || '—';
   }
   const creators = normalizeCreators(data.creators || []);
-
   const path = location.pathname;
 
   // Creator detail page
@@ -277,18 +263,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const c = creators.find(x => x.creator_id === id) || creators[0];
     if (!c) return;
 
-    renderCreatorHero(c);
-    renderTop5(c.top5_recent, 'top5-recent');
-    renderTop5(c.top5_alltime, 'top5-alltime');
+    renderCreatorHeader(c);
+    renderCreatorMetrics(c);
 
-    // Sort videos by newest first; cap to recent 20
+    // Recent videos first (new order)
     const vids = (c.recent_videos || [])
       .slice()
       .sort((a,b) => String(b.published_at).localeCompare(String(a.published_at)))
       .slice(0, 20);
-
     renderVideoRows(vids);
     makeSortable(vids, '#videos-table', 'published_at', 'desc', rows => renderVideoRows(rows));
+
+    // Then top videos (recent & all-time)
+    renderTop5Rows(c.top5_recent || [], 'top5-recent');
+    renderTop5Rows(c.top5_alltime || [], 'top5-alltime');
     return;
   }
 
@@ -300,7 +288,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // Creators directory (fallback = same as home for now)
+  // Creators directory (fallback = same table)
   renderHomeRows(creators);
   makeSortable(creators, '#creators-table', 'subs_total', 'desc', rows => renderHomeRows(rows));
   wireHomeFilter(creators);
