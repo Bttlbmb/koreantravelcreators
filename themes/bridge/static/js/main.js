@@ -1,10 +1,12 @@
-// ---------- Data loading ----------
+/* =======================
+   Data loading & helpers
+   ======================= */
 async function loadData() {
-  const res = await fetch('data/creators.json'); // relative to <base>
+  // Relative path so it works under project pages (with <base href="{{ SITEURL }}/">)
+  const res = await fetch('data/creators.json');
   return await res.json();
 }
 const fmt = n => (n ?? 0).toLocaleString();
-const pct = x => (x == null ? '—' : `${(x * 100).toFixed(1)}%`);
 const isoToYmd = s => (s ? String(s).slice(0, 10) : '—');
 
 // Normalize incoming JSON so UI code is robust
@@ -15,21 +17,47 @@ function normalizeCreators(raw) {
     channel_url: c.channel_url || '#',
     subs_total: Number(c.subs_total ?? 0),
 
-    // Expect growth_30d as percent (e.g., 8.2 for +8.2%). If you store 0.082, switch below.
-    growth_30d: (c.growth_30d == null ? null : Number(c.growth_30d)), // %
-    // If you store fraction: growth_30d: c.growth_30d == null ? null : Number(c.growth_30d * 100),
+    // growth_30d expected as percent (e.g., 6.8 means +6.8%)
+    growth_30d: (c.growth_30d == null ? null : Number(c.growth_30d)),
 
     avg_views: Number(c.avg_views ?? 0),
 
-    // engagement_rate as fraction (0..1) preferred. If you already store % (e.g., 4.3), divide by 100 here.
-    engagement_rate: (c.engagement_rate == null ? null : Number(c.engagement_rate)), // fraction
+    // engagement_rate expected as fraction 0..1 (e.g., 0.043 -> 4.3%)
+    engagement_rate: (c.engagement_rate == null ? null : Number(c.engagement_rate)),
 
     uploads_30d: Number(c.uploads_30d ?? 0),
-    last_upload: c.last_upload || null
+    last_upload: c.last_upload || null,
+
+    // keep for detail page if present
+    recent_videos: c.recent_videos || []
   }));
 }
 
-// ---------- Home: table ----------
+/* =======================
+   Tooltip logic
+   ======================= */
+function setupTooltips(scope = document) {
+  scope.querySelectorAll('.info').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      // Close any open tooltip
+      document.querySelectorAll('.tooltip').forEach(t => t.remove());
+      // Create tooltip
+      const tip = document.createElement('div');
+      tip.className = 'tooltip';
+      tip.textContent = el.dataset.info || '';
+      el.appendChild(tip);
+    });
+  });
+  // Close on outside click
+  document.body.addEventListener('click', () => {
+    document.querySelectorAll('.tooltip').forEach(t => t.remove());
+  });
+}
+
+/* =======================
+   Home: Excel-style table
+   ======================= */
 function growthCell(c) {
   if (c.growth_30d == null) return '—';
   const v = Number(c.growth_30d);
@@ -39,7 +67,6 @@ function growthCell(c) {
 }
 function rateCell(c) {
   if (c.engagement_rate == null) return '—';
-  // c.engagement_rate expected as fraction (0..1)
   return `${(c.engagement_rate * 100).toFixed(1)}%`;
 }
 
@@ -66,7 +93,6 @@ function makeSortable(creators) {
 
   function toComparable(v, key) {
     if (key === 'display_name' || key === 'last_upload') return String(v ?? '').toLowerCase();
-    if (key === 'growth_30d' || key === 'engagement_rate') return Number(v ?? 0);
     return Number(v ?? 0);
   }
 
@@ -107,21 +133,37 @@ function wireFilter(creators) {
   });
 }
 
-// ---------- Creator detail (kept working) ----------
+/* =======================
+   Creator detail (kept)
+   ======================= */
 function renderCreatorDetail(c) {
   const box = document.getElementById('creator-detail');
   if (!box) return;
   box.innerHTML = `
     <div class="card">
       <h2>${c.display_name}</h2>
-      <div class="muted">${fmt(c.subs_total)} subscribers · avg ${fmt(c.avg_views)} views · ${(c.engagement_rate!=null)?(c.engagement_rate*100).toFixed(1)+'% ER':'— ER'}</div>
+      <div class="muted">
+        ${fmt(c.subs_total)} subscribers ·
+        avg ${fmt(c.avg_views)} views ·
+        ${(c.engagement_rate!=null)?(c.engagement_rate*100).toFixed(1)+'% ER':'— ER'}
+      </div>
       <p><a class="btn" href="${c.channel_url}" target="_blank" rel="noopener">Open YouTube Channel</a></p>
+      ${c.recent_videos?.length ? `
+        <h3>Recent Videos</h3>
+        <ul>${c.recent_videos.map(v => `
+          <li><a href="${v.url}" target="_blank" rel="noopener">${v.title}</a> — ${fmt(v.views)} views (${isoToYmd(v.published_at)})</li>
+        `).join('')}</ul>
+      ` : ``}
     </div>
   `;
 }
 
-// ---------- Router ----------
+/* =======================
+   Router
+   ======================= */
 document.addEventListener('DOMContentLoaded', async () => {
+  setupTooltips();
+
   const data = await loadData();
   if (document.getElementById('last-updated')) {
     document.getElementById('last-updated').textContent = data.last_updated || '—';
@@ -130,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const path = location.pathname;
   if (path.includes('/creators/')) {
-    // (Optional) could render a card view here
+    // (Optional) could render a card directory here; we keep home as the main table
     renderTableRows(creators);
     makeSortable(creators);
     wireFilter(creators);
