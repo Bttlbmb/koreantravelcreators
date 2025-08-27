@@ -1,4 +1,4 @@
 from pelicanconf import *
 
-SITEURL = ''
-RELATIVE_URLS = True
+SITEURL = 'https://bttlbmb.github.io/koreantravelcreators'
+RELATIVE_URLS = False
