@@ -276,7 +276,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       .sort((a,b) => String(b.published_at).localeCompare(String(a.published_at)))
       .slice(0, 20);
     renderVideoRows(vids);
-    makeSortable(vids, '#videos-table', 'published_at', 'desc', rows => renderVideoRows(rows));
 
     // Then top videos
     renderTop5Rows(c.top5_recent || [], 'top5-recent');
