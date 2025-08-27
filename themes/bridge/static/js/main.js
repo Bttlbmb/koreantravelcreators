@@ -2,23 +2,51 @@
    Data loading & helpers
    ======================= */
 async function loadData() {
+  // Relative path works under project pages with <base href="{{ SITEURL }}/">
   const res = await fetch('data/creators.json');
   return await res.json();
 }
 const fmt = n => (n ?? 0).toLocaleString();
 const isoToYmd = s => (s ? String(s).slice(0, 10) : '—');
 
+// Normalize incoming JSON so UI code is robust
 function normalizeCreators(raw) {
   return (raw || []).map(c => ({
     creator_id: c.creator_id,
     display_name: c.display_name || '—',
     channel_url: c.channel_url || '#',
     subs_total: Number(c.subs_total ?? 0),
-    growth_30d: (c.growth_30d == null ? null : Number(c.growth_30d)), // percent
+
+    // home metrics
+    growth_30d: (c.growth_30d == null ? null : Number(c.growth_30d)), // percent (e.g., 6.8)
     avg_views: Number(c.avg_views ?? 0),
     engagement_rate: (c.engagement_rate == null ? null : Number(c.engagement_rate)), // fraction 0..1
     uploads_30d: Number(c.uploads_30d ?? 0),
     last_upload: c.last_upload || null,
+
+    // creator page new metrics
+    channel_created: c.channel_created || null,      // ISO date
+    total_uploads: (c.total_uploads == null ? null : Number(c.total_uploads)),
+    views_30d: (c.views_30d == null ? null : Number(c.views_30d)),
+    views_90d: (c.views_90d == null ? null : Number(c.views_90d)),
+    views_365d: (c.views_365d == null ? null : Number(c.views_365d)),
+    velocity_7d: (c.velocity_7d == null ? null : Number(c.velocity_7d)), // median/avg views in first 7d
+    shorts_ratio_90d: (c.shorts_ratio_90d == null ? null : Number(c.shorts_ratio_90d)), // 0..1
+
+    top5_recent: (c.top5_recent || []).map(v => ({
+      title: v.title || '—',
+      url: v.url || '#',
+      published_at: v.published_at || null,
+      views: Number(v.views ?? 0)
+    })),
+    top5_alltime: (c.top5_alltime || []).map(v => ({
+      title: v.title || '—',
+      url: v.url || '#',
+      published_at: v.published_at || null,
+      views: Number(v.views ?? 0)
+    })),
+
+    // recent videos for the table
     recent_videos: (c.recent_videos || []).map(v => ({
       title: v.title || '—',
       url: v.url || '#',
@@ -65,7 +93,8 @@ function rateCell(c) {
   if (c.engagement_rate == null) return '—';
   return `${(c.engagement_rate * 100).toFixed(1)}%`;
 }
-function renderTableRows(creators) {
+
+function renderHomeRows(creators) {
   const tbody = document.querySelector('#creators-table tbody');
   if (!tbody) return;
   tbody.innerHTML = creators.map(c => `
@@ -81,34 +110,34 @@ function renderTableRows(creators) {
     </tr>
   `).join('');
 }
-function makeSortable(creators, tableSelector = '#creators-table') {
+
+function makeSortable(dataArray, tableSelector, defaultKey = 'subs_total', defaultDir = 'desc', renderer) {
   const table = document.querySelector(tableSelector);
   const thead = table?.querySelector('thead');
   if (!thead) return;
-  let state = { key: 'subs_total', dir: 'desc' };
+  let state = { key: defaultKey, dir: defaultDir };
+
   function toComparable(v, key) {
-    if (key === 'display_name' || key === 'last_upload' || key === 'title' || key === 'published_at')
-      return String(v ?? '').toLowerCase();
+    if (['display_name','last_upload','title','published_at'].includes(key)) return String(v ?? '').toLowerCase();
     return Number(v ?? 0);
+    // note: growth_30d, engagement_rate are numeric already
   }
+
   function sortData() {
     const { key, dir } = state;
-    const dataset = tableSelector === '#creators-table'
-      ? creators.slice()
-      : creators.slice(); // same function works for videos table (we pass different data)
-    const sorted = dataset.sort((a,b) => {
+    const sorted = dataArray.slice().sort((a,b) => {
       const av = toComparable(a[key], key);
       const bv = toComparable(b[key], key);
       if (av < bv) return dir === 'asc' ? -1 : 1;
       if (av > bv) return dir === 'asc' ? 1 : -1;
       return 0;
     });
-    if (tableSelector === '#creators-table') renderTableRows(sorted);
-    else renderVideoRows(sorted);
+    renderer(sorted);
     thead.querySelectorAll('th').forEach(th => th.classList.remove('sort-asc','sort-desc'));
     const active = thead.querySelector(`th[data-key="${key}"]`);
     if (active) active.classList.add(dir === 'asc' ? 'sort-asc' : 'sort-desc');
   }
+
   thead.addEventListener('click', e => {
     const th = e.target.closest('th[data-key]');
     if (!th) return;
@@ -117,28 +146,28 @@ function makeSortable(creators, tableSelector = '#creators-table') {
     state.key = k;
     sortData();
   });
+
   sortData();
-  return { sortData, set: (k, dir) => { state = { key:k, dir:dir||'desc' }; sortData(); } };
 }
-function wireFilter(creators) {
+
+function wireHomeFilter(creators) {
   const input = document.getElementById('creator-filter');
   if (!input) return;
   input.addEventListener('input', () => {
     const t = input.value.toLowerCase();
     const filtered = creators.filter(c => c.display_name.toLowerCase().includes(t));
-    renderTableRows(filtered);
+    renderHomeRows(filtered);
   });
 }
 
 /* =======================
-   Creator detail: layout
+   Creator page: hero
    ======================= */
-function heroMetric(label, value, sub='') {
+function heroMetric(label, value) {
   return `
     <div class="metric">
       <div class="metric-label">${label}</div>
-      <div class="metric-value">${value}</div>
-      ${sub ? `<div class="metric-sub">${sub}</div>` : ``}
+      <div class="metric-value">${value ?? '—'}</div>
     </div>
   `;
 }
@@ -149,6 +178,9 @@ function renderCreatorHero(c) {
   const growth = c.growth_30d == null ? '—' :
     `<span class="${c.growth_30d >= 0 ? 'growth-up':'growth-down'}">${c.growth_30d >= 0 ? '▲':'▼'} ${Math.abs(c.growth_30d).toFixed(1)}%</span>`;
   const er = c.engagement_rate == null ? '—' : `${(c.engagement_rate*100).toFixed(1)}%`;
+  const shorts = c.shorts_ratio_90d == null ? '—' : `${Math.round(c.shorts_ratio_90d*100)}%`;
+  const viewsCombo = [c.views_30d, c.views_90d, c.views_365d].map(v => v==null ? '—' : fmt(v)).join(' / ');
+
   hero.innerHTML = `
     <div class="hero-head">
       <h2>${c.display_name}</h2>
@@ -157,20 +189,61 @@ function renderCreatorHero(c) {
     <div class="hero-grid">
       ${heroMetric('Subscribers', fmt(c.subs_total))}
       ${heroMetric('Growth (30d)', growth)}
-      ${heroMetric('Avg views (last 10)', fmt(c.avg_views))}
-      ${heroMetric('Engagement rate', er)}
+      ${heroMetric('Avg views (10)', fmt(c.avg_views))}
+      ${heroMetric('ER', er)}
       ${heroMetric('Uploads (30d)', fmt(c.uploads_30d))}
       ${heroMetric('Last upload', isoToYmd(c.last_upload))}
+      ${heroMetric('Created', isoToYmd(c.channel_created))}
+      ${heroMetric('Total uploads', c.total_uploads==null ? '—' : fmt(c.total_uploads))}
+      ${heroMetric('Views 30/90/365d', viewsCombo)}
+      ${heroMetric('7-day velocity', c.velocity_7d==null ? '—' : fmt(c.velocity_7d))}
+      ${heroMetric('Shorts % (90d)', shorts)}
     </div>
   `;
 }
 
 /* =======================
-   Creator detail: videos
+   Creator page: top-5
+   ======================= */
+function renderTop5(list, targetId) {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  if (!list || !list.length) {
+    el.innerHTML = '<p class="muted small">No data.</p>';
+    return;
+  }
+  el.innerHTML = `
+    <div class="table-wrap"><table class="tbl">
+      <thead><tr>
+        <th class="left">Title</th>
+        <th class="left">Published</th>
+        <th class="right">Views</th>
+        <th class="left">Link</th>
+      </tr></thead>
+      <tbody>
+        ${list.map(v => `
+          <tr>
+            <td class="left">${v.title}</td>
+            <td class="left">${isoToYmd(v.published_at)}</td>
+            <td class="right">${fmt(v.views)}</td>
+            <td class="left"><a class="link" href="${v.url}" target="_blank" rel="noopener">Watch</a></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table></div>
+  `;
+}
+
+/* =======================
+   Creator page: videos table
    ======================= */
 function renderVideoRows(videos) {
   const tbody = document.querySelector('#videos-table tbody');
   if (!tbody) return;
+  if (!videos || videos.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="left muted">No recent videos found.</td></tr>`;
+    return;
+  }
   tbody.innerHTML = videos.map(v => `
     <tr>
       <td class="left">${v.title}</td>
@@ -198,32 +271,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const path = location.pathname;
 
-  // Home
-  if (!path.includes('/creators/') && !path.includes('/creator/')) {
-    renderTableRows(creators);
-    makeSortable(creators, '#creators-table');
-    wireFilter(creators);
-    return;
-  }
-
-  // Creator detail
+  // Creator detail page
   if (path.includes('/creator/')) {
     const id = new URLSearchParams(location.search).get('id');
     const c = creators.find(x => x.creator_id === id) || creators[0];
     if (!c) return;
-    renderCreatorHero(c);
 
-    // Sort videos by published desc initially; limit to most recent 20
-    const vids = c.recent_videos.slice().sort((a,b) =>
-      String(b.published_at).localeCompare(String(a.published_at))
-    ).slice(0, 20);
+    renderCreatorHero(c);
+    renderTop5(c.top5_recent, 'top5-recent');
+    renderTop5(c.top5_alltime, 'top5-alltime');
+
+    // Sort videos by newest first; cap to recent 20
+    const vids = (c.recent_videos || [])
+      .slice()
+      .sort((a,b) => String(b.published_at).localeCompare(String(a.published_at)))
+      .slice(0, 20);
+
     renderVideoRows(vids);
-    makeSortable(vids, '#videos-table'); // enable sortable columns
+    makeSortable(vids, '#videos-table', 'published_at', 'desc', rows => renderVideoRows(rows));
     return;
   }
 
-  // Creators directory (optional; we show same table as home by default)
-  renderTableRows(creators);
-  makeSortable(creators, '#creators-table');
-  wireFilter(creators);
+  // Home (table)
+  if (!path.includes('/creators/')) {
+    renderHomeRows(creators);
+    makeSortable(creators, '#creators-table', 'subs_total', 'desc', rows => renderHomeRows(rows));
+    wireHomeFilter(creators);
+    return;
+  }
+
+  // Creators directory (fallback = same as home for now)
+  renderHomeRows(creators);
+  makeSortable(creators, '#creators-table', 'subs_total', 'desc', rows => renderHomeRows(rows));
+  wireHomeFilter(creators);
 });
