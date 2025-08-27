@@ -156,3 +156,11 @@ body.name-roman-first .name-roman  { font-size: 18px; color: var(--text);  font-
 
 /* Keep header cells from wrapping awkwardly in narrow tables */
 #videos-table thead th, #top5-table thead th { white-space: nowrap; }
+
+/* Video title subtitle (translated) */
+.vid-title .title-native { font-weight: 700; }
+.vid-title .title-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
