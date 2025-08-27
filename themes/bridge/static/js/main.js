@@ -30,23 +30,23 @@ function normalizeCreators(raw) {
 
     /* home metrics */
     subs_total: Number(c.subs_total ?? 0),
-    growth_30d: (c.growth_30d == null ? null : Number(c.growth_30d)), // percent
+    growth_30d: (c.growth_30d == null ? null : Number(c.growth_30d)),
     avg_views: Number(c.avg_views ?? 0),
-    engagement_rate: (c.engagement_rate == null ? null : Number(c.engagement_rate)), // 0..1
+    engagement_rate: (c.engagement_rate == null ? null : Number(c.engagement_rate)),
     uploads_30d: Number(c.uploads_30d ?? 0),
     last_upload: c.last_upload || null,
 
-    /* creator page metrics (new) */
-    channel_created: c.channel_created || null, // ISO date
+    /* creator page metrics */
+    channel_created: c.channel_created || null,
     total_uploads: (c.total_uploads == null ? null : Number(c.total_uploads)),
     total_views: (c.total_views == null ? null : Number(c.total_views)),
     views_30d: (c.views_30d == null ? null : Number(c.views_30d)),
     views_90d: (c.views_90d == null ? null : Number(c.views_90d)),
-    views_165d: (c.views_165d == null ? null : Number(c.views_165d)), // per request
-    avg_views_30d: (c.avg_views_30d == null ? null : Number(c.avg_views_30d)), // avg views after 30d
-    shorts_ratio_overall: (c.shorts_ratio_overall == null ? null : Number(c.shorts_ratio_overall)), // 0..1
+    views_165d: (c.views_165d == null ? null : Number(c.views_165d)),
+    avg_views_30d: (c.avg_views_30d == null ? null : Number(c.avg_views_30d)),
+    shorts_ratio_overall: (c.shorts_ratio_overall == null ? null : Number(c.shorts_ratio_overall)),
 
-    /* top-5 and recent videos */
+    /* videos */
     top5_alltime: (c.top5_alltime || []).map(v => ({
       title: v.title || '—',
       url: v.url || '#',
@@ -69,7 +69,7 @@ function normalizeCreators(raw) {
 }
 
 /* =======================
-   Tooltips (for ℹ️ icons) — kept for home page headers
+   Tooltips (for ℹ️ icons)
    ======================= */
 function setupTooltips(scope = document) {
   scope.querySelectorAll('.info').forEach(el => {
@@ -123,8 +123,7 @@ function renderHomeRows(creators) {
 }
 
 function makeSortable(dataArray, tableSelector, defaultKey = 'subs_total', defaultDir = 'desc', renderer) {
-  const table = document.querySelector(tableSelector);
-  const thead = table?.querySelector('thead');
+  const thead = document.querySelector(`${tableSelector} thead`);
   if (!thead) return;
   let state = { key: defaultKey, dir: defaultDir };
 
@@ -199,10 +198,11 @@ function metric(label, value, extraClass='') {
   `;
 }
 
-/* two rows of four tiles (with one double-wide) */
+/* Two separate groups: Basic + Performance (4-col grid each) */
 function renderCreatorMetrics(c) {
-  const grid = document.getElementById('metrics-grid');
-  if (!grid) return;
+  const basic = document.getElementById('metrics-basic');
+  const perf  = document.getElementById('metrics-performance');
+  if (!basic || !perf) return;
 
   const growth = c.growth_30d == null ? '—'
     : `<span class="${c.growth_30d>=0?'growth-up':'growth-down'}">${c.growth_30d>=0?'▲':'▼'} ${Math.abs(c.growth_30d).toFixed(1)}%</span>`;
@@ -210,17 +210,20 @@ function renderCreatorMetrics(c) {
   const viewsCombo = [c.views_30d, c.views_90d, c.views_165d].map(v => v==null ? '—' : fmt(v)).join(' / ');
   const shortsPct = c.shorts_ratio_overall == null ? '—' : `${Math.round(c.shorts_ratio_overall*100)}%`;
 
-  grid.innerHTML = [
-    /* Row 1 */
+  // BASIC group
+  basic.innerHTML = [
     metric('Subscribers', fmt(c.subs_total)),
     metric('Subscribers Growth (30d)', growth),
+    metric('Total uploads', c.total_uploads==null ? '—' : fmt(c.total_uploads)),
+    metric('Share shorts among content', shortsPct)
+  ].join('');
+
+  // PERFORMANCE group (with double-wide tile)
+  perf.innerHTML = [
     metric('Total views', c.total_views==null ? '—' : fmt(c.total_views)),
     metric('Total views (30/90/165d)', viewsCombo, 'metric--wide'),
-    /* Row 2 */
     metric('Average views after 30d', c.avg_views_30d==null ? '—' : fmt(c.avg_views_30d)),
-    metric('Engagement rate', er),
-    metric('Share shorts among content', shortsPct),
-    metric('Total uploads', c.total_uploads==null ? '—' : fmt(c.total_uploads))
+    metric('Engagement rate', er)
   ].join('');
 }
 
@@ -281,7 +284,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // Home (table) — sortable
+  // Home (table) — sortable + filter
   if (!path.includes('/creators/')) {
     renderHomeRows(creators);
     makeSortable(creators, '#creators-table', 'subs_total', 'desc', rows => renderHomeRows(rows));
