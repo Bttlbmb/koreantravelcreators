@@ -2,7 +2,8 @@
    Data loading & helpers
    ======================= */
 async function loadData() {
-  const res = await fetch('data/creators.json'); // relative to <base>
+  // Relative path works under project pages with <base href="{{ SITEURL }}/">
+  const res = await fetch('data/creators.json');
   return await res.json();
 }
 const fmt = n => (n ?? 0).toLocaleString();
@@ -181,7 +182,7 @@ function renderCreatorMetrics(c) {
   const perf  = document.getElementById('metrics-performance');
   if (!basic || !perf) return;
 
-  // BASIC: creation date, total uploads, uploads in 30d, last upload
+  // BASIC group (left)
   basic.innerHTML = [
     metric('Created', isoToYmd(c.channel_created)),
     metric('Total uploads', c.total_uploads==null ? '—' : fmt(c.total_uploads)),
@@ -189,7 +190,7 @@ function renderCreatorMetrics(c) {
     metric('Last upload', isoToYmd(c.last_upload)),
   ].join('');
 
-  // PERFORMANCE: subs, growth, avg views, ER, views (30/90/365), velocity, Shorts %
+  // PERFORMANCE group (right)
   const growth = c.growth_30d == null ? '—'
     : `<span class="${c.growth_30d>=0?'growth-up':'growth-down'}">${c.growth_30d>=0?'▲':'▼'} ${Math.abs(c.growth_30d).toFixed(1)}%</span>`;
   const er = c.engagement_rate == null ? '—' : `${(c.engagement_rate*100).toFixed(1)}%`;
@@ -201,7 +202,10 @@ function renderCreatorMetrics(c) {
     metric('Growth (30d)', growth),
     metric('Avg views (10)', fmt(c.avg_views)),
     metric('ER', er),
-    metric('Views 30/90/365d', viewsCombo),
+    `<div class="metric metric--wide">
+       <div class="metric-label">Views 30/90/365d</div>
+       <div class="metric-value">${viewsCombo}</div>
+     </div>`,
     metric('7-day velocity', c.velocity_7d==null ? '—' : fmt(c.velocity_7d)),
     metric('Shorts % (90d)', shorts),
   ].join('');
@@ -266,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderCreatorHeader(c);
     renderCreatorMetrics(c);
 
-    // Recent videos first (new order)
+    // Recent videos (first)
     const vids = (c.recent_videos || [])
       .slice()
       .sort((a,b) => String(b.published_at).localeCompare(String(a.published_at)))
@@ -274,7 +278,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderVideoRows(vids);
     makeSortable(vids, '#videos-table', 'published_at', 'desc', rows => renderVideoRows(rows));
 
-    // Then top videos (recent & all-time)
+    // Then top videos
     renderTop5Rows(c.top5_recent || [], 'top5-recent');
     renderTop5Rows(c.top5_alltime || [], 'top5-alltime');
     return;
