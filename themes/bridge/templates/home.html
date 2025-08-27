@@ -1,7 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Europe – Korean Travel YouTubers (Mock Demo)</h2>
+<h2>Europe – Korean Travel YouTubers</h2>
 <p class="muted">Last updated: <span id="last-updated">—</span></p>
-<div id="creator-list"></div>
-<div id="recent-videos"></div>
+
+<input id="creator-filter" class="input" placeholder="Filter by name or destination…"/>
+
+<div class="table-wrap">
+  <table id="creators-table" class="tbl">
+    <thead>
+      <tr>
+        <th data-key="display_name" class="left">Creator</th>
+        <th data-key="subs_total" class="right">Subscribers</th>
+        <th data-key="avg_views" class="right">Avg views (last 10)</th>
+        <th data-key="avg_comments" class="right">Avg comments</th>
+        <th data-key="destinations" class="left">Destinations</th>
+        <th class="left">Channel</th>
+      </tr>
+    </thead>
+    <tbody><!-- rows injected by JS --></tbody>
+  </table>
+</div>
+<p class="small muted">Tip: click headers to sort. Type to filter.</p>
 {% endblock %}
