@@ -19,6 +19,8 @@ jobs:
           python-version: '3.11'
       - run: pip install pelican markdown jinja2
       - run: pelican content -o output -s publishconf.py
+      - run: pelican content -o output -s publishconf.py
+      - run: ls -la output && echo "----" && find output -maxdepth 2 -type f
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./output
