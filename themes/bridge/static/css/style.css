@@ -103,7 +103,7 @@ small, .small { font-size: 12px; color: var(--muted); }
 
 /* Table (Excel-style) */
 .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 12px; background: #0c1222; }
-.tbl { width: 100%; border-collapse: collapse; min-width: 760px; }
+.tbl { width: 100%; border-collapse: collapse; min-width: 900px; }
 .tbl thead th {
   font-weight: 700; text-align: left; color: #c7d2fe;
   border-bottom: 1px solid var(--border); padding: 12px 14px; position: sticky; top: 0; background: #0c1222;
@@ -119,4 +119,9 @@ small, .small { font-size: 12px; color: var(--muted); }
 /* Sort arrows */
 .tbl thead th.sort-asc::after  { content: " ▲"; font-size: 11px; color: var(--muted); }
 .tbl thead th.sort-desc::after { content: " ▼"; font-size: 11px; color: var(--muted); }
+
+/* Growth coloring */
+.growth-up { color: #4ade80; font-weight: 600; }
+.growth-down { color: #f87171; font-weight: 600; }
+
 
