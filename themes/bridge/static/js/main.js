@@ -9,42 +9,53 @@ async function loadData() {
 const fmt = n => (n ?? 0).toLocaleString();
 const isoToYmd = s => (s ? String(s).slice(0, 10) : '—');
 
+/* name display preference (optional toggle ready) */
+const NAME_PREF_KEY = 'namePref'; // 'native-first' | 'roman-first'
+function getNamePref(){ return localStorage.getItem(NAME_PREF_KEY) || 'native-first'; }
+function setNamePref(v){ localStorage.setItem(NAME_PREF_KEY, v); }
+
+/* choose romanized/english label */
+function getRomanLabel(c) {
+  return c.name_english || c.name_romanized || null;
+}
+
+/* Normalize incoming JSON so UI code is robust */
 function normalizeCreators(raw) {
   return (raw || []).map(c => ({
     creator_id: c.creator_id,
     display_name: c.display_name || '—',
+    name_romanized: c.name_romanized || null,
+    name_english: c.name_english || null,
     channel_url: c.channel_url || '#',
-    subs_total: Number(c.subs_total ?? 0),
 
-    // home metrics
-    growth_30d: (c.growth_30d == null ? null : Number(c.growth_30d)), // percent (e.g., 6.8)
+    /* home metrics */
+    subs_total: Number(c.subs_total ?? 0),
+    growth_30d: (c.growth_30d == null ? null : Number(c.growth_30d)), // percent
     avg_views: Number(c.avg_views ?? 0),
-    engagement_rate: (c.engagement_rate == null ? null : Number(c.engagement_rate)), // fraction 0..1
+    engagement_rate: (c.engagement_rate == null ? null : Number(c.engagement_rate)), // 0..1
     uploads_30d: Number(c.uploads_30d ?? 0),
     last_upload: c.last_upload || null,
 
-    // creator page metrics
+    /* creator page metrics (new) */
     channel_created: c.channel_created || null, // ISO date
     total_uploads: (c.total_uploads == null ? null : Number(c.total_uploads)),
+    total_views: (c.total_views == null ? null : Number(c.total_views)),
     views_30d: (c.views_30d == null ? null : Number(c.views_30d)),
     views_90d: (c.views_90d == null ? null : Number(c.views_90d)),
-    views_365d: (c.views_365d == null ? null : Number(c.views_365d)),
-    velocity_7d: (c.velocity_7d == null ? null : Number(c.velocity_7d)),
-    shorts_ratio_90d: (c.shorts_ratio_90d == null ? null : Number(c.shorts_ratio_90d)), // 0..1
+    views_165d: (c.views_165d == null ? null : Number(c.views_165d)), // per request
+    avg_views_30d: (c.avg_views_30d == null ? null : Number(c.avg_views_30d)), // avg views after 30d
+    shorts_ratio_overall: (c.shorts_ratio_overall == null ? null : Number(c.shorts_ratio_overall)), // 0..1
 
-    top5_recent: (c.top5_recent || []).map(v => ({
-      title: v.title || '—',
-      url: v.url || '#',
-      published_at: v.published_at || null,
-      views: Number(v.views ?? 0)
-    })),
+    /* top-5 and recent videos */
     top5_alltime: (c.top5_alltime || []).map(v => ({
       title: v.title || '—',
       url: v.url || '#',
       published_at: v.published_at || null,
-      views: Number(v.views ?? 0)
+      views: Number(v.views ?? 0),
+      likes: Number(v.likes ?? 0),
+      comments: Number(v.comments ?? 0),
+      is_short: !!v.is_short
     })),
-
     recent_videos: (c.recent_videos || []).map(v => ({
       title: v.title || '—',
       url: v.url || '#',
@@ -58,7 +69,7 @@ function normalizeCreators(raw) {
 }
 
 /* =======================
-   Tooltips (for ℹ️ icons)
+   Tooltips (for ℹ️ icons) — kept for home page headers
    ======================= */
 function setupTooltips(scope = document) {
   scope.querySelectorAll('.info').forEach(el => {
@@ -96,7 +107,10 @@ function renderHomeRows(creators) {
   if (!tbody) return;
   tbody.innerHTML = creators.map(c => `
     <tr>
-      <td class="left"><a href="creator/?id=${encodeURIComponent(c.creator_id)}">${c.display_name}</a></td>
+      <td class="left namecell">
+        <a href="creator/?id=${encodeURIComponent(c.creator_id)}" class="name-native">${c.display_name}</a>
+        ${getRomanLabel(c) ? `<div class="name-roman">${getRomanLabel(c)}</div>` : ``}
+      </td>
       <td class="right">${fmt(c.subs_total)}</td>
       <td class="right">${growthCell(c)}</td>
       <td class="right">${fmt(c.avg_views)}</td>
@@ -151,7 +165,10 @@ function wireHomeFilter(creators) {
   if (!input) return;
   input.addEventListener('input', () => {
     const t = input.value.toLowerCase();
-    const filtered = creators.filter(c => c.display_name.toLowerCase().includes(t));
+    const filtered = creators.filter(c => {
+      const roman = (getRomanLabel(c) || '').toLowerCase();
+      return c.display_name.toLowerCase().includes(t) || roman.includes(t);
+    });
     renderHomeRows(filtered);
   });
 }
@@ -164,85 +181,64 @@ function renderCreatorHeader(c) {
   if (!hero) return;
   hero.innerHTML = `
     <div class="hero-head">
-      <h2>${c.display_name}</h2>
+      <div>
+        <h2 class="name-native">${c.display_name}</h2>
+        ${getRomanLabel(c) ? `<div class="name-roman">${getRomanLabel(c)}</div>` : ``}
+      </div>
       <a class="btn" href="${c.channel_url}" target="_blank" rel="noopener">Open Channel</a>
     </div>
   `;
 }
-function metric(label, value) {
+
+function metric(label, value, extraClass='') {
   return `
-    <div class="metric">
+    <div class="metric ${extraClass}">
       <div class="metric-label">${label}</div>
       <div class="metric-value">${value ?? '—'}</div>
     </div>
   `;
 }
+
+/* two rows of four tiles (with one double-wide) */
 function renderCreatorMetrics(c) {
-  const basic = document.getElementById('metrics-basic');
-  const perf  = document.getElementById('metrics-performance');
-  if (!basic || !perf) return;
+  const grid = document.getElementById('metrics-grid');
+  if (!grid) return;
 
-  // BASIC group (left)
-  basic.innerHTML = [
-    metric('Created', isoToYmd(c.channel_created)),
-    metric('Total uploads', c.total_uploads==null ? '—' : fmt(c.total_uploads)),
-    metric('Uploads (30d)', fmt(c.uploads_30d)),
-    metric('Last upload', isoToYmd(c.last_upload)),
-  ].join('');
-
-  // PERFORMANCE group (right)
   const growth = c.growth_30d == null ? '—'
     : `<span class="${c.growth_30d>=0?'growth-up':'growth-down'}">${c.growth_30d>=0?'▲':'▼'} ${Math.abs(c.growth_30d).toFixed(1)}%</span>`;
   const er = c.engagement_rate == null ? '—' : `${(c.engagement_rate*100).toFixed(1)}%`;
-  const shorts = c.shorts_ratio_90d == null ? '—' : `${Math.round(c.shorts_ratio_90d*100)}%`;
-  const viewsCombo = [c.views_30d, c.views_90d, c.views_365d].map(v => v==null ? '—' : fmt(v)).join(' / ');
+  const viewsCombo = [c.views_30d, c.views_90d, c.views_165d].map(v => v==null ? '—' : fmt(v)).join(' / ');
+  const shortsPct = c.shorts_ratio_overall == null ? '—' : `${Math.round(c.shorts_ratio_overall*100)}%`;
 
-  perf.innerHTML = [
+  grid.innerHTML = [
+    /* Row 1 */
     metric('Subscribers', fmt(c.subs_total)),
-    metric('Growth (30d)', growth),
-    metric('Avg views (10)', fmt(c.avg_views)),
-    metric('ER', er),
-    `<div class="metric metric--wide">
-       <div class="metric-label">Views 30/90/365d</div>
-       <div class="metric-value">${viewsCombo}</div>
-     </div>`,
-    metric('7-day velocity', c.velocity_7d==null ? '—' : fmt(c.velocity_7d)),
-    metric('Shorts % (90d)', shorts),
+    metric('Subscribers Growth (30d)', growth),
+    metric('Total views', c.total_views==null ? '—' : fmt(c.total_views)),
+    metric('Total views (30/90/165d)', viewsCombo, 'metric--wide'),
+    /* Row 2 */
+    metric('Average views after 30d', c.avg_views_30d==null ? '—' : fmt(c.avg_views_30d)),
+    metric('Engagement rate', er),
+    metric('Share shorts among content', shortsPct),
+    metric('Total uploads', c.total_uploads==null ? '—' : fmt(c.total_uploads))
   ].join('');
 }
 
-function renderVideoRows(videos) {
-  const tbody = document.querySelector('#videos-table tbody');
+function renderVideoRows(videos, tbodySel) {
+  const tbody = document.querySelector(tbodySel);
   if (!tbody) return;
   if (!videos || videos.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" class="left muted">No recent videos found.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="left muted">No videos found.</td></tr>`;
     return;
   }
   tbody.innerHTML = videos.map(v => `
     <tr>
-      <td class="left">${v.title}</td>
+      <td class="left col-title">${v.title}</td>
       <td class="left">${isoToYmd(v.published_at)}</td>
-      <td class="right">${fmt(v.views)}</td>
-      <td class="right">${v.likes ? fmt(v.likes) : '—'}</td>
-      <td class="right">${v.comments ? fmt(v.comments) : '—'}</td>
+      <td class="right col-narrow">${fmt(v.views)}</td>
+      <td class="right col-narrow">${v.likes ? fmt(v.likes) : '—'}</td>
+      <td class="right col-narrow">${v.comments ? fmt(v.comments) : '—'}</td>
       <td class="left">${v.is_short ? 'Yes' : 'No'}</td>
-      <td class="left"><a class="link" href="${v.url}" target="_blank" rel="noopener">Watch</a></td>
-    </tr>
-  `).join('');
-}
-
-function renderTop5Rows(list, targetId) {
-  const tbody = document.getElementById(targetId);
-  if (!tbody) return;
-  if (!list || !list.length) {
-    tbody.innerHTML = `<tr><td colspan="4" class="left muted">No data.</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = list.map(v => `
-    <tr>
-      <td class="left">${v.title}</td>
-      <td class="left">${isoToYmd(v.published_at)}</td>
-      <td class="right">${fmt(v.views)}</td>
       <td class="left"><a class="link" href="${v.url}" target="_blank" rel="noopener">Watch</a></td>
     </tr>
   `).join('');
@@ -252,6 +248,7 @@ function renderTop5Rows(list, targetId) {
    Router
    ======================= */
 document.addEventListener('DOMContentLoaded', async () => {
+  document.body.classList.toggle('name-roman-first', getNamePref() === 'roman-first');
   setupTooltips();
 
   const data = await loadData();
@@ -270,20 +267,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderCreatorHeader(c);
     renderCreatorMetrics(c);
 
-    // Recent videos (first)
+    /* Recent videos (newest first), non-sortable table */
     const vids = (c.recent_videos || [])
       .slice()
       .sort((a,b) => String(b.published_at).localeCompare(String(a.published_at)))
       .slice(0, 20);
-    renderVideoRows(vids);
+    renderVideoRows(vids, '#videos-table tbody');
 
-    // Then top videos
-    renderTop5Rows(c.top5_recent || [], 'top5-recent');
-    renderTop5Rows(c.top5_alltime || [], 'top5-alltime');
+    /* Top-5 videos all-time (non-sortable, same columns) */
+    const top5 = (c.top5_alltime || []).slice(0, 5);
+    renderVideoRows(top5, '#top5-alltime');
+
     return;
   }
 
-  // Home (table)
+  // Home (table) — sortable
   if (!path.includes('/creators/')) {
     renderHomeRows(creators);
     makeSortable(creators, '#creators-table', 'subs_total', 'desc', rows => renderHomeRows(rows));
