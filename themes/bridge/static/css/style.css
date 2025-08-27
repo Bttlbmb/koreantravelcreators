@@ -124,4 +124,27 @@ small, .small { font-size: 12px; color: var(--muted); }
 .growth-up { color: #4ade80; font-weight: 600; }
 .growth-down { color: #f87171; font-weight: 600; }
 
+/* Info icons + tooltips */
+.info {
+  cursor: pointer;
+  font-size: 13px;
+  margin-left: 4px;
+  color: var(--muted);
+  position: relative;
+}
+.info:hover { color: var(--accent); }
+
+.tooltip {
+  position: absolute;
+  z-index: 20;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.4);
+  max-width: 260px;
+  line-height: 1.4;
+}
 
