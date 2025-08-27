@@ -164,3 +164,11 @@ body.name-roman-first .name-roman  { font-size: 18px; color: var(--text);  font-
   color: var(--muted);
   margin-top: 2px;
 }
+
+.logo {
+  height: 32px;       /* scale to fit */
+  width: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+  border-radius: 6px; /* optional: soften corners */
+}
