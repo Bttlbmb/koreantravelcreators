@@ -2,18 +2,26 @@
 {% block content %}
 <a class="back" href="{{ SITEURL }}/creators/">&larr; Back</a>
 
-<!-- Hero: title + romanized/english subtitle + CTA -->
+<!-- Hero -->
 <section class="creator-hero card" id="creator-hero"></section>
 
-<!-- Metrics (two rows of four, with one double-wide) -->
+<!-- Basic metrics -->
 <section class="section">
   <div class="metrics-group card">
-    <h3>Basic & Performance</h3>
-    <div id="metrics-grid" class="metrics-grid-4"><!-- filled by JS --></div>
+    <h3>Basic</h3>
+    <div id="metrics-basic" class="metrics-grid-4"></div>
   </div>
 </section>
 
-<!-- Recent videos FIRST -->
+<!-- Performance metrics -->
+<section class="section">
+  <div class="metrics-group card">
+    <h3>Performance</h3>
+    <div id="metrics-performance" class="metrics-grid-4"></div>
+  </div>
+</section>
+
+<!-- Recent videos -->
 <section class="section">
   <h3>Recent videos</h3>
   <div class="table-wrap">
@@ -29,13 +37,12 @@
           <th class="left">Link</th>
         </tr>
       </thead>
-      <tbody><!-- rows injected by JS --></tbody>
+      <tbody></tbody>
     </table>
   </div>
-  <p class="small muted">Tip: headers aren’t clickable (fixed order).</p>
 </section>
 
-<!-- Top-5 AFTER recent videos (all-time, non-sortable, same columns) -->
+<!-- Top-5 all-time -->
 <section class="section">
   <h3>Top-5 videos all-time</h3>
   <div class="table-wrap">
@@ -51,7 +58,7 @@
           <th class="left">Link</th>
         </tr>
       </thead>
-      <tbody id="top5-alltime"><!-- rows injected by JS --></tbody>
+      <tbody id="top5-alltime"></tbody>
     </table>
   </div>
 </section>
