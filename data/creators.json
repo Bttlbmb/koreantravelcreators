@@ -1,0 +1,75 @@
+{
+  "last_updated": "2025-08-27",
+  "creators": [
+    {
+      "creator_id": "UCDEMO001",
+      "display_name": "여행하는민수",
+      "channel_url": "https://youtube.com/channel/UCDEMO001",
+      "subs_total": 128000,
+      "avg_views": 45210,
+      "destinations": [
+        "Berlin",
+        "Munich",
+        "Vienna"
+      ],
+      "recent_videos": [
+        {
+          "video_id": "vid001",
+          "title": "베를린 여행 브이로그",
+          "url": "https://youtu.be/vid001",
+          "views": 120000,
+          "published_at": "2025-07-10"
+        },
+        {
+          "video_id": "vid002",
+          "title": "빈 여행 꿀팁",
+          "url": "https://youtu.be/vid002",
+          "views": 85400,
+          "published_at": "2025-07-12"
+        }
+      ]
+    },
+    {
+      "creator_id": "UCDEMO002",
+      "display_name": "코코트래블",
+      "channel_url": "https://youtube.com/channel/UCDEMO002",
+      "subs_total": 76500,
+      "avg_views": 27310,
+      "destinations": [
+        "Paris",
+        "Rome",
+        "Interlaken"
+      ],
+      "recent_videos": [
+        {
+          "video_id": "vid101",
+          "title": "파리 카페 투어",
+          "url": "https://youtu.be/vid101",
+          "views": 99000,
+          "published_at": "2025-08-02"
+        }
+      ]
+    },
+    {
+      "creator_id": "UCDEMO003",
+      "display_name": "K-트립로그",
+      "channel_url": "https://youtube.com/channel/UCDEMO003",
+      "subs_total": 312000,
+      "avg_views": 112300,
+      "destinations": [
+        "Hallstatt",
+        "Salzburg",
+        "Berlin"
+      ],
+      "recent_videos": [
+        {
+          "video_id": "vid201",
+          "title": "할슈타트 원데이 코스",
+          "url": "https://youtu.be/vid201",
+          "views": 220000,
+          "published_at": "2025-07-28"
+        }
+      ]
+    }
+  ]
+}
