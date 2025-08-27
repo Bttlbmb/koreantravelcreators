@@ -2,25 +2,24 @@
    Data loading & helpers
    ======================= */
 async function loadData() {
+  // Relative path works under project pages with <base href="{{ SITEURL }}/">
   const res = await fetch('data/creators.json');
   return await res.json();
 }
 const fmt = n => (n ?? 0).toLocaleString();
 const isoToYmd = s => (s ? String(s).slice(0, 10) : '—');
 
-/* (optional) name preference */
-const NAME_PREF_KEY = 'namePref';
+/* name display preference (optional toggle ready) */
+const NAME_PREF_KEY = 'namePref'; // 'native-first' | 'roman-first'
 function getNamePref(){ return localStorage.getItem(NAME_PREF_KEY) || 'native-first'; }
+function setNamePref(v){ localStorage.setItem(NAME_PREF_KEY, v); }
 
-/* romanized/english label for creators */
+/* choose romanized/english label */
 function getRomanLabel(c) {
   return c.name_english || c.name_romanized || null;
 }
 
-/* detect Hangul in strings (used if you later want to auto-flag untranslated titles) */
-const HANGUL_RE = /[\u3131-\u318E\uAC00-\uD7A3]/;
-
-/* Normalize creators & videos */
+/* Normalize incoming JSON so UI code is robust */
 function normalizeCreators(raw) {
   return (raw || []).map(c => ({
     creator_id: c.creator_id,
@@ -47,7 +46,7 @@ function normalizeCreators(raw) {
     avg_views_30d: (c.avg_views_30d == null ? null : Number(c.avg_views_30d)),
     shorts_ratio_overall: (c.shorts_ratio_overall == null ? null : Number(c.shorts_ratio_overall)),
 
-    /* videos (add title_en for translations) */
+    /* videos */
     top5_alltime: (c.top5_alltime || []).map(v => ({
       title: v.title || '—',
       title_en: v.title_en || null,
@@ -72,7 +71,7 @@ function normalizeCreators(raw) {
 }
 
 /* =======================
-   Tooltips
+   Tooltips (for ℹ️ icons)
    ======================= */
 function setupTooltips(scope = document) {
   scope.querySelectorAll('.info').forEach(el => {
@@ -91,7 +90,7 @@ function setupTooltips(scope = document) {
 }
 
 /* =======================
-   Home: table
+   Home: Excel-style table
    ======================= */
 function growthCell(c) {
   if (c.growth_30d == null) return '—';
@@ -162,19 +161,6 @@ function makeSortable(dataArray, tableSelector, defaultKey = 'subs_total', defau
   sortData();
 }
 
-function wireHomeFilter(creators) {
-  const input = document.getElementById('creator-filter');
-  if (!input) return;
-  input.addEventListener('input', () => {
-    const t = input.value.toLowerCase();
-    const filtered = creators.filter(c => {
-      const roman = (getRomanLabel(c) || '').toLowerCase();
-      return c.display_name.toLowerCase().includes(t) || roman.includes(t);
-    });
-    renderHomeRows(filtered);
-  });
-}
-
 /* =======================
    Creator page
    ======================= */
@@ -201,7 +187,7 @@ function metric(label, value, extraClass='') {
   `;
 }
 
-/* Two separate groups: Basic + Performance */
+/* Two separate groups: Basic + Performance (4-col grid each) */
 function renderCreatorMetrics(c) {
   const basic = document.getElementById('metrics-basic');
   const perf  = document.getElementById('metrics-performance');
@@ -213,6 +199,7 @@ function renderCreatorMetrics(c) {
   const viewsCombo = [c.views_30d, c.views_90d, c.views_165d].map(v => v==null ? '—' : fmt(v)).join(' / ');
   const shortsPct = c.shorts_ratio_overall == null ? '—' : `${Math.round(c.shorts_ratio_overall*100)}%`;
 
+  // BASIC group
   basic.innerHTML = [
     metric('Subscribers', fmt(c.subs_total)),
     metric('Subscribers Growth (30d)', growth),
@@ -220,6 +207,7 @@ function renderCreatorMetrics(c) {
     metric('Share shorts among content', shortsPct)
   ].join('');
 
+  // PERFORMANCE group (with double-wide tile)
   perf.innerHTML = [
     metric('Total views', c.total_views==null ? '—' : fmt(c.total_views)),
     metric('Total views (30/90/165d)', viewsCombo, 'metric--wide'),
@@ -270,6 +258,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const creators = normalizeCreators(data.creators || []);
   const path = location.pathname;
 
+  // Creator detail page
   if (path.includes('/creator/')) {
     const id = new URLSearchParams(location.search).get('id');
     const c = creators.find(x => x.creator_id === id) || creators[0];
@@ -278,25 +267,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderCreatorHeader(c);
     renderCreatorMetrics(c);
 
+    /* Recent videos (newest first), non-sortable table */
     const vids = (c.recent_videos || [])
       .slice()
       .sort((a,b) => String(b.published_at).localeCompare(String(a.published_at)))
       .slice(0, 20);
     renderVideoRows(vids, '#videos-table tbody');
 
+    /* Top-5 videos all-time (non-sortable, same columns) */
     const top5 = (c.top5_alltime || []).slice(0, 5);
     renderVideoRows(top5, '#top5-alltime');
+
     return;
   }
 
+  // Home (table) — sortable only (no filter)
   if (!path.includes('/creators/')) {
     renderHomeRows(creators);
     makeSortable(creators, '#creators-table', 'subs_total', 'desc', rows => renderHomeRows(rows));
-    wireHomeFilter(creators);
     return;
   }
 
+  // Creators directory (fallback = same table)
   renderHomeRows(creators);
   makeSortable(creators, '#creators-table', 'subs_total', 'desc', rows => renderHomeRows(rows));
-  wireHomeFilter(creators);
 });
