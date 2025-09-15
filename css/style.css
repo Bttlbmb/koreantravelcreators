@@ -1,0 +1,1610 @@
+/* =========================================================
+   Korean Travel YouTubers – Europe
+   Global stylesheet (Fresh Aqua – light, professional)
+   ========================================================= */
+
+/* ====== Theme tokens ====== */
+:root {
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --card: #FFFFFF;
+  --text: #111827;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+  --accent: #0EA5E9;
+  --accent-2: #06B6D4;
+  --accent-3: #F59E0B;
+  --shadow: 0 6px 20px rgba(15, 23, 42, .08);
+
+  /* Social Media Colors */
+  --instagram: #E1306C;
+  --tiktok: #000000;
+  --youtube: #FF0000;
+  --twitter: #1DA1F2;
+
+  /* Video Grid Colors */
+  --video-bg: #FFFFFF;
+  --video-shadow: 0 4px 12px rgba(15, 23, 42, .06);
+  --video-hover-shadow: 0 8px 24px rgba(15, 23, 42, .12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ====== Layout ====== */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: saturate(1.2) blur(8px);
+  background: rgba(255, 255, 255, .85);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 14px 20px;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+.site-header a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-header nav a {
+  color: var(--muted);
+  margin-right: 16px;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.site-header nav a:hover {
+  color: var(--text);
+  background: rgba(14, 165, 233, .08);
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.site-footer .wrap {
+  padding-top: 18px;
+  padding-bottom: 32px;
+}
+
+/* Creator social links */
+.creator-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.social-links {
+  display: flex;
+  gap: 8px;
+}
+
+.social-link {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  background: #f3f4f6;
+  color: var(--text);
+  transition: background-color 0.2s;
+}
+
+.social-link:hover {
+  background: #e5e7eb;
+}
+
+.social-link.instagram {
+  background: #f472b6;
+  color: white;
+}
+
+.social-link.tiktok {
+  background: #000000;
+  color: white;
+}
+
+.social-link.youtube {
+  background: #FF0000;
+  color: white;
+}
+
+.social-link.instagram:hover {
+  background: #ec4899;
+}
+
+.social-link.tiktok:hover {
+  background: #333333;
+}
+
+.social-link.youtube:hover {
+  background: #cc0000;
+}
+
+/* YouTube link in video tables */
+.youtube-link {
+  display: inline-block;
+  padding: 4px 8px;
+  background: #FF0000;
+  color: white;
+  text-decoration: none;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.youtube-link:hover {
+  background: #cc0000;
+  color: white;
+  text-decoration: none;
+}
+
+/* ====== Type & links ====== */
+h1,
+h2,
+h3 {
+  margin: 0 0 10px;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  margin-top: 16px;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0F172A;
+  margin-top: 6px;
+}
+
+/* Video sections need more breathing room */
+.video-section {
+  margin-top: 32px;
+}
+
+/* Add spacing between creator info and metrics sections */
+.metrics-section {
+  margin-top: 16px;
+}
+
+a {
+  color: #0F4C81;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0A3B66;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+small,
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.last-updated {
+  margin-top: 4px;
+  opacity: 0.7;
+}
+
+.back {
+  color: var(--muted);
+  display: inline-block;
+  margin: 6px 0 12px;
+}
+
+.back:hover {
+  color: var(--text);
+}
+
+/* Page navigation header */
+.page-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px 0 12px;
+  min-height: 24px;
+  /* Ensure consistent height */
+}
+
+/* Ensure last-updated in nav has consistent styling */
+.page-nav .last-updated {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* ====== Inputs ====== */
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 10px;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.input:focus {
+  border-color: #93C5FD;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+}
+
+/* ====== Cards & buttons ====== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.btn {
+  display: inline-block;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, var(--accent), #22B3ED);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(14, 165, 233, .25);
+}
+
+.btn:hover {
+  filter: brightness(1.05);
+  box-shadow: 0 8px 18px rgba(14, 165, 233, .35);
+}
+
+/* ====== Tooltips ====== */
+.info {
+  cursor: pointer;
+  font-size: 13px;
+  margin-left: 4px;
+  color: var(--muted);
+  position: relative;
+}
+
+.info:hover {
+  color: var(--accent);
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 20;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  max-width: 260px;
+  line-height: 1.4;
+}
+
+/* ====== Tables ====== */
+.table-wrap {
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.tbl thead th {
+  font-weight: 700;
+  text-align: left;
+  color: #0F172A;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 14px;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tbl thead th.right {
+  text-align: right;
+}
+
+.tbl thead th.left {
+  text-align: left;
+}
+
+.tbl tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #EDF2F7;
+}
+
+.tbl tbody tr:hover {
+  background: #F8FAFC;
+}
+
+.tbl .right {
+  text-align: right;
+}
+
+.tbl .left {
+  text-align: left;
+}
+
+/* Sort arrows (added by JS for sortable tables only) */
+.tbl thead th.sort-asc::after {
+  content: " ▲";
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.tbl thead th.sort-desc::after {
+  content: " ▼";
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Non-sortable variant (creator lists) */
+.tbl.nosort thead th {
+  cursor: default;
+}
+
+.tbl.nosort thead th.sort-asc::after,
+.tbl.nosort thead th.sort-desc::after {
+  content: none;
+}
+
+/* Growth coloring */
+.growth-up {
+  color: #16A34A;
+  font-weight: 600;
+}
+
+.growth-down {
+  color: #DC2626;
+  font-weight: 600;
+}
+
+.growth-neutral {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Name subtitle */
+.namecell .name-roman,
+.name-roman {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* English translated name */
+.namecell .name-english,
+.name-english,
+.name-custom {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.name-custom {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--accent);
+}
+
+body.name-roman-first .name-native {
+  font-size: 16px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+body.name-roman-first .name-roman {
+  font-size: 18px;
+  color: var(--text);
+  font-weight: 800;
+}
+
+/* ====== Creator hero & metrics ====== */
+.creator-hero {
+  padding: 18px;
+}
+
+
+.hero-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.creator-left {
+  flex: 1;
+}
+
+.creator-right {
+  flex: 0 0 calc(50% + 6px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.name-custom-link {
+  color: #0F4C81;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: -2px;
+  align-self: flex-start;
+}
+
+.name-custom-link:hover {
+  color: #0A3B66;
+  text-decoration: underline;
+}
+
+.social-links-only {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.social-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 4px;
+}
+
+/* Right-side summary styling - reference bar style */
+.creator-summary-right {
+  background: #f1f5f9;
+  padding: 12px 20px;
+  border-radius: 6px;
+}
+
+.summary-text-right {
+  margin: 0;
+  font-size: 14px;
+  color: #495057;
+  line-height: 1.4;
+}
+
+/* Responsive layout for mobile */
+@media (max-width: 768px) {
+  .site-header .wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .site-header nav {
+    width: 100%;
+  }
+  
+  .site-header nav a {
+    margin-right: 8px;
+    margin-bottom: 4px;
+    padding: 6px 6px;
+    font-size: 14px;
+  }
+  
+  /* Page title with last updated - mobile layout */
+  .wrap > div[style*="display: flex"][style*="justify-content: space-between"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px;
+  }
+  
+  .wrap > div[style*="display: flex"][style*="justify-content: space-between"] .muted {
+    align-self: flex-end;
+  }
+  
+  .hero-head {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .creator-right {
+    order: 2;
+  }
+  
+  .social-links-only {
+    justify-content: flex-start;
+  }
+}
+
+/* Metrics grid: 4 columns (two rows), with double-wide support */
+.metrics-group.card {
+  padding: 16px;
+}
+
+.metrics-group h3 {
+  margin: 0 0 12px;
+}
+
+.metrics-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 960px) {
+  .metrics-grid-4 {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+  }
+}
+
+.metric {
+  background: #F8FAFC;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.metric-value {
+  font-size: 18px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.metric-subtext {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.2;
+}
+
+.metric--wide {
+  grid-column: span 2;
+}
+
+/* Chart-based metrics */
+.metric--chart {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.metric-chart {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.reach-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.reach-chart svg {
+  width: 100%;
+  height: auto;
+  max-height: 40px;
+}
+
+.chart-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.chart-placeholder {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  padding: 12px 0;
+}
+
+/* Recent/Top tables: column widths */
+.col-title {
+  width: 42%;
+}
+
+.col-narrow {
+  width: 8%;
+}
+
+/* Creator page video tables - ensure consistent column alignment */
+.video-section .tbl {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.video-section .tbl th,
+.video-section .tbl td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Specific column widths for creator page video tables */
+.video-section .tbl .col-title {
+  width: 40%;
+}
+
+.video-section .tbl th:nth-child(2),
+/* Published */
+.video-section .tbl td:nth-child(2) {
+  width: 12%;
+}
+
+.video-section .tbl .col-narrow {
+  /* Views, Likes, Comments */
+  width: 10%;
+}
+
+.video-section .tbl th:nth-child(6),
+/* Type */
+.video-section .tbl td:nth-child(6) {
+  width: 8%;
+}
+
+.video-section .tbl th:nth-child(7),
+/* Link */
+.video-section .tbl td:nth-child(7) {
+  width: 8%;
+}
+
+/* Responsive adjustments for creator page tables */
+@media (max-width: 768px) {
+  .video-section .tbl .col-title {
+    width: 50%;
+  }
+
+  .video-section .tbl .col-narrow {
+    width: 8%;
+  }
+
+  .video-section .tbl th:nth-child(2),
+  .video-section .tbl td:nth-child(2) {
+    width: 15%;
+  }
+}
+
+/* Keep header cells from wrapping awkwardly in narrow tables */
+#videos-table thead th,
+#top5-table thead th {
+  white-space: nowrap;
+}
+
+/* Video title subtitle (translated) */
+.vid-title .title-native {
+  font-weight: 700;
+}
+
+.vid-title .title-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.logo {
+  height: 32px;
+  /* scale to fit */
+  width: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+  border-radius: 6px;
+  /* optional: soften corners */
+}
+
+/* ====== Avatar Styling ====== */
+.avatar-small {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  vertical-align: middle;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.avatar-large {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Dashboard table name cell layout */
+.namecell {
+  display: flex;
+  align-items: center;
+}
+
+.name-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+  flex-shrink: 1;
+  /* Prevent excessive text shrinking while allowing some flexibility */
+}
+
+/* Creator page header layout */
+.creator-title {
+  display: flex;
+  align-items: stretch;
+}
+
+.title-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: 56px;
+  /* Match avatar height and distribute content from top to bottom */
+}
+
+.title-text h2 {
+  margin: 0;
+  line-height: 1.1;
+  align-self: flex-start;
+  margin-top: -2px;
+}
+
+.title-text .name-custom,
+.title-text .last-updated {
+  margin: 0;
+}
+
+/* ====== Trends Page ====== */
+.trends-page {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.trend-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.trend-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.15);
+  transform: translateY(-2px);
+}
+
+.trend-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--accent), #0ea5e9);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.trend-icon i {
+  color: white;
+  font-size: 20px;
+}
+
+.trend-card h3 {
+  margin: 0 0 8px 0;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.trend-card p {
+  margin: 0 0 16px 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.placeholder-data {
+  padding: 16px;
+  background: #f8fafc;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  text-align: center;
+  color: var(--muted);
+  font-style: italic;
+  font-size: 13px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .trends-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .trend-card {
+    padding: 20px;
+  }
+}
+
+/* ====== Videos Page ====== */
+.stats-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 24px 0 32px 0;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 16px;
+  background: rgba(14, 165, 233, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(14, 165, 233, 0.1);
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.video-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.video-category {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.video-category h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.category-desc {
+  margin: 0 0 20px 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.video-table {
+  margin-top: 0;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.video-table th,
+.video-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Exception for video title cells - allow wrapping */
+.video-table .vid-title {
+  white-space: normal;
+  overflow: visible;
+}
+
+/* Creators page - 5 column tables (Top Performers, Rising Stars) */
+#top-performers-table,
+#rising-stars-table {
+  table-layout: fixed;
+}
+
+#top-performers-table th:nth-child(1),
+/* Creator */
+#top-performers-table td:nth-child(1),
+#rising-stars-table th:nth-child(1),
+#rising-stars-table td:nth-child(1) {
+  width: 34%;
+}
+
+#top-performers-table th:nth-child(2),
+/* Avg Views / Growth */
+#top-performers-table td:nth-child(2),
+#rising-stars-table th:nth-child(2),
+#rising-stars-table td:nth-child(2) {
+  width: 19%;
+}
+
+#top-performers-table th:nth-child(3),
+/* Engagement */
+#top-performers-table td:nth-child(3),
+#rising-stars-table th:nth-child(3),
+#rising-stars-table td:nth-child(3) {
+  width: 16%;
+}
+
+#top-performers-table th:nth-child(4),
+/* Subscribers */
+#top-performers-table td:nth-child(4),
+#rising-stars-table th:nth-child(4),
+#rising-stars-table td:nth-child(4) {
+  width: 23%;
+}
+
+#top-performers-table th:nth-child(5),
+/* Channel */
+#top-performers-table td:nth-child(5),
+#rising-stars-table th:nth-child(5),
+#rising-stars-table td:nth-child(5) {
+  width: 8%;
+}
+
+/* Creators page - 7 column table (All Creators) */
+#creators-table {
+  table-layout: fixed;
+}
+
+#creators-table th:nth-child(1),
+/* Creator */
+#creators-table td:nth-child(1) {
+  width: 33%;
+}
+
+#creators-table th:nth-child(2),
+/* Subs */
+#creators-table td:nth-child(2) {
+  width: 12%;
+}
+
+#creators-table th:nth-child(3),
+/* Growth */
+#creators-table td:nth-child(3) {
+  width: 11%;
+}
+
+#creators-table th:nth-child(4),
+/* Avg Views */
+#creators-table td:nth-child(4) {
+  width: 12%;
+}
+
+#creators-table th:nth-child(5),
+/* Videos */
+#creators-table td:nth-child(5) {
+  width: 9%;
+}
+
+#creators-table th:nth-child(6),
+/* Last Upload */
+#creators-table td:nth-child(6) {
+  width: 15%;
+}
+
+#creators-table th:nth-child(7),
+/* Channel */
+#creators-table td:nth-child(7) {
+  width: 8%;
+}
+
+/* Homepage creators table - 6 column table with better name column width */
+#home-creators-table {
+  table-layout: fixed;
+}
+
+#home-creators-table th:nth-child(1),
+/* Creator */
+#home-creators-table td:nth-child(1) {
+  width: 38%;
+}
+
+#home-creators-table th:nth-child(2),
+/* Subscribers */
+#home-creators-table td:nth-child(2) {
+  width: 14%;
+}
+
+#home-creators-table th:nth-child(3),
+/* Uploads (30d) */
+#home-creators-table td:nth-child(3) {
+  width: 13%;
+}
+
+#home-creators-table th:nth-child(4),
+/* Reach (30d) */
+#home-creators-table td:nth-child(4) {
+  width: 14%;
+}
+
+#home-creators-table th:nth-child(5),
+/* Engagement (30d) */
+#home-creators-table td:nth-child(5) {
+  width: 13%;
+}
+
+#home-creators-table th:nth-child(6),
+/* Channel */
+#home-creators-table td:nth-child(6) {
+  width: 8%;
+}
+
+/* Override text truncation for creator name cells in homepage table */
+#home-creators-table td:nth-child(1) {
+  overflow: visible;
+  white-space: normal;
+}
+
+/* Override text truncation for creator name cells in all creators table */
+#creators-table td:nth-child(1) {
+  overflow: visible;
+  white-space: normal;
+}
+
+/* Ensure creator name cells can wrap properly */
+#creators-table .namecell,
+#home-creators-table .namecell {
+  overflow: visible;
+  white-space: normal;
+}
+
+/* Allow creator name content to wrap */
+#creators-table .name-content,
+#home-creators-table .name-content {
+  overflow: visible;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Override restrictive width constraints for table name content */
+#home-creators-table .name-content {
+  min-width: 200px;
+  flex-shrink: 0;
+  /* Don't shrink - use full available space */
+}
+
+#creators-table .name-content {
+  min-width: 180px;
+  flex-shrink: 0;
+  /* Don't shrink - use full available space */
+}
+
+/* Prevent unnecessary line breaks in creator names */
+#home-creators-table .name-native,
+#creators-table .name-native {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* Allow natural line breaks only when absolutely necessary */
+#home-creators-table .namecell,
+#creators-table .namecell {
+  max-width: none;
+  width: auto;
+}
+
+/* Trends page tables - 5 column tables with optimized widths */
+#growth-trends-table,
+#engagement-patterns-table,
+#travel-analysis-table {
+  table-layout: fixed;
+}
+
+/* Growth Trends Table (Creator | Growth Rate | Subscribers | Reach | Channel) */
+#growth-trends-table th:nth-child(1),
+#growth-trends-table td:nth-child(1) {
+  width: 34%;
+}
+
+#growth-trends-table th:nth-child(2),
+#growth-trends-table td:nth-child(2) {
+  width: 18%;
+}
+
+#growth-trends-table th:nth-child(3),
+#growth-trends-table td:nth-child(3) {
+  width: 20%;
+}
+
+#growth-trends-table th:nth-child(4),
+#growth-trends-table td:nth-child(4) {
+  width: 20%;
+}
+
+#growth-trends-table th:nth-child(5),
+#growth-trends-table td:nth-child(5) {
+  width: 8%;
+}
+
+/* Engagement Patterns Table (Creator | Engagement Rate | Subscribers | Avg Views | Channel) */
+#engagement-patterns-table th:nth-child(1),
+#engagement-patterns-table td:nth-child(1) {
+  width: 34%;
+}
+
+#engagement-patterns-table th:nth-child(2),
+#engagement-patterns-table td:nth-child(2) {
+  width: 16%;
+}
+
+#engagement-patterns-table th:nth-child(3),
+#engagement-patterns-table td:nth-child(3) {
+  width: 21%;
+}
+
+#engagement-patterns-table th:nth-child(4),
+#engagement-patterns-table td:nth-child(4) {
+  width: 21%;
+}
+
+#engagement-patterns-table th:nth-child(5),
+#engagement-patterns-table td:nth-child(5) {
+  width: 8%;
+}
+
+/* Travel Analysis Table (Creator | Travel % | Category | Subscribers | Channel) */
+#travel-analysis-table th:nth-child(1),
+#travel-analysis-table td:nth-child(1) {
+  width: 34%;
+}
+
+#travel-analysis-table th:nth-child(2),
+#travel-analysis-table td:nth-child(2) {
+  width: 12%;
+}
+
+#travel-analysis-table th:nth-child(3),
+#travel-analysis-table td:nth-child(3) {
+  width: 14%;
+}
+
+#travel-analysis-table th:nth-child(4),
+#travel-analysis-table td:nth-child(4) {
+  width: 32%;
+}
+
+#travel-analysis-table th:nth-child(5),
+#travel-analysis-table td:nth-child(5) {
+  width: 8%;
+}
+
+/* Apply name content optimizations to trends tables */
+#growth-trends-table .namecell,
+#engagement-patterns-table .namecell,
+#travel-analysis-table .namecell {
+  overflow: visible;
+  white-space: normal;
+}
+
+#growth-trends-table .name-content,
+#engagement-patterns-table .name-content,
+#travel-analysis-table .name-content {
+  overflow: visible;
+  word-wrap: break-word;
+  hyphens: auto;
+  min-width: 180px;
+  flex-shrink: 0;
+}
+
+#growth-trends-table .name-native,
+#engagement-patterns-table .name-native,
+#travel-analysis-table .name-native {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* Videos page - consistent column widths for all video tables */
+.video-categories .video-table {
+  table-layout: fixed;
+}
+
+/* Video tables - common column widths */
+.video-categories .video-table th:nth-child(1),
+/* Video Title */
+.video-categories .video-table td:nth-child(1) {
+  width: 30%;
+}
+
+.video-categories .video-table th:nth-child(2),
+/* Creator */
+.video-categories .video-table td:nth-child(2) {
+  width: 15%;
+}
+
+/* Most Viewed table - 8 columns */
+.video-categories .video-table th:nth-child(3),
+/* Views */
+.video-categories .video-table td:nth-child(3) {
+  width: 10%;
+}
+
+.video-categories .video-table th:nth-child(4),
+/* Likes */
+.video-categories .video-table td:nth-child(4) {
+  width: 8%;
+}
+
+.video-categories .video-table th:nth-child(5),
+/* Comments */
+.video-categories .video-table td:nth-child(5) {
+  width: 8%;
+}
+
+.video-categories .video-table th:nth-child(6),
+/* Type */
+.video-categories .video-table td:nth-child(6) {
+  width: 8%;
+}
+
+.video-categories .video-table th:nth-child(7),
+/* Date */
+.video-categories .video-table td:nth-child(7) {
+  width: 10%;
+}
+
+.video-categories .video-table th:nth-child(8),
+/* Watch */
+.video-categories .video-table td:nth-child(8) {
+  width: 6%;
+}
+
+.video-categories .video-table th:nth-child(9),
+/* Watch (for 9-column tables) */
+.video-categories .video-table td:nth-child(9) {
+  width: 6%;
+}
+
+/* Mobile responsive adjustments for video tables */
+@media (max-width: 768px) {
+
+  /* Creators page mobile */
+  #top-performers-table th:nth-child(1),
+  #top-performers-table td:nth-child(1),
+  #rising-stars-table th:nth-child(1),
+  #rising-stars-table td:nth-child(1),
+  #creators-table th:nth-child(1),
+  #creators-table td:nth-child(1) {
+    width: 45%;
+  }
+
+  /* Videos page mobile */
+  .video-categories .video-table th:nth-child(1),
+  .video-categories .video-table td:nth-child(1) {
+    width: 40%;
+  }
+
+  .video-categories .video-table th:nth-child(2),
+  .video-categories .video-table td:nth-child(2) {
+    width: 20%;
+  }
+}
+
+.video-table th {
+  background: var(--bg);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+}
+
+.video-table td {
+  vertical-align: top;
+  padding: 12px 8px;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.video-table tr:hover {
+  background: rgba(14, 165, 233, 0.02);
+}
+
+.video-table .vid-title {
+  max-width: 400px;
+}
+
+.video-table .vid-title .title-native {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.video-table .vid-title .title-sub {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.2;
+  font-style: italic;
+}
+
+/* Responsive adjustments for videos page */
+@media (max-width: 768px) {
+  .stats-overview {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+    margin: 16px 0 24px 0;
+  }
+
+  .stat-item {
+    padding: 12px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+
+  .video-category {
+    padding: 16px;
+  }
+
+  .video-category h3 {
+    font-size: 18px;
+  }
+
+  .video-table .vid-title {
+    max-width: 250px;
+  }
+
+  .video-table th,
+  .video-table td {
+    padding: 8px 4px;
+    font-size: 12px;
+  }
+
+  .video-table .vid-title .title-native {
+    font-size: 13px;
+  }
+
+  .video-table .vid-title .title-sub {
+    font-size: 11px;
+  }
+}
+
+/* ====== Methodology Reference Bar ====== */
+.reference-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin: 24px 0 0 0;
+}
+
+/* When reference bar is inside a metrics card */
+.metrics-group .reference-bar {
+  margin-top: 24px;
+  margin-bottom: 0;
+  background: #f1f5f9;
+}
+
+/* Metrics headings within the card */
+.metrics-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 16px 0;
+}
+
+/* Add space above Performance heading (second heading in the metrics group) */
+.metrics-group .metrics-heading:nth-of-type(2) {
+  margin-top: 24px;
+}
+
+.reference-text {
+  font-size: 14px;
+  color: #495057;
+}
+
+.reference-link {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.reference-link:hover {
+  text-decoration: underline;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .reference-bar {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
+
+/* ====== Methodology Page Styling ====== */
+.methodology-page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.methodology-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.methodology-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.intro-text {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.metric-card {
+  padding: 24px;
+}
+
+.metric-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.metric-description {
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+
+.metric-ranges {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.metric-ranges strong {
+  color: var(--text);
+}
+
+.methodology-footer {
+  margin-top: 32px;
+  margin-bottom: 24px;
+  text-align: center;
+  background: rgba(14, 165, 233, 0.05);
+  border: 1px solid rgba(14, 165, 233, 0.1);
+}
+
+.disclaimer {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Mobile responsive for methodology page */
+@media (max-width: 768px) {
+  .methodology-header h1 {
+    font-size: 26px;
+  }
+  
+  .intro-text {
+    font-size: 15px;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .metric-card {
+    padding: 16px;
+  }
+  
+  .metric-title {
+    font-size: 18px;
+  }
+  
+  .metric-description {
+    font-size: 14px;
+  }
+  
+  .metric-ranges {
+    font-size: 13px;
+  }
+}
