@@ -383,6 +383,10 @@ small,
   text-align: left;
 }
 
+.tbl .center {
+  text-align: center;
+}
+
 /* Sort arrows (added by JS for sortable tables only) */
 .tbl thead th.sort-asc::after {
   content: " ▲";
